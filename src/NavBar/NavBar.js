@@ -12,13 +12,13 @@ function NavBar() {
       </div>
       <div className="checkbox-container">
         <label>
-          <input type="checkbox" /> Option 1
+          <input type="checkbox" /> Beep
         </label>
         <label>
-          <input type="checkbox" /> Option 2
+          <input type="checkbox" /> Boop
         </label>
         <label>
-          <input type="checkbox" /> Option 3
+          <input type="checkbox" /> Bop
         </label>
       </div>
     </nav>

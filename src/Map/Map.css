@@ -25,3 +25,65 @@
     left: 0;
   }
   
+  .map-controls {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 10; /* Ensure controls are above the map */
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .map-controls button {
+    margin: 5px;
+    padding: 0px 0px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .zoom-controls {
+    width: 100%;
+  }
+  
+  .zoom-controls button {
+    flex-direction: row;
+    line-height: 0;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    border-radius: 200px;
+    font-size: 19px;
+    font-weight:700;
+    padding: 20px;
+    font-family:'Times New Roman', Times, serif;
+  }
+
+  .reset-button {
+  }
+
+  .reset-button button {
+    flex-direction: row;
+    line-height: 0;
+    text-align: center;
+    border-radius: 200px;
+    font-size: 19px;
+    font-weight:700;
+    padding: 20px;
+    font-family:'Times New Roman', Times, serif;
+  }
+
+  /* Styling for the dots */
+.map-container circle {
+  fill: #ff634760; /* Change this color to your preference */
+  stroke: black;
+  stroke-width: .001px;
+  transition: r 0.3s, fill 0.3s;
+  cursor: pointer;
+}
+
+/* Styling for the dots on hover */
+.map-container circle:hover {
+  fill: rgb(255, 219, 153);
+}
