@@ -6,8 +6,21 @@ import './NavBar.css';
 function NavBar() {
   return (
     <nav className="nav-bar">
-      <h2>NavBar</h2>
-      <p>This is the NavBar component.</p>
+      <div className="search-container">
+        <input type="text" placeholder="Search..." />
+        <button type="button">Search</button>
+      </div>
+      <div className="checkbox-container">
+        <label>
+          <input type="checkbox" /> Option 1
+        </label>
+        <label>
+          <input type="checkbox" /> Option 2
+        </label>
+        <label>
+          <input type="checkbox" /> Option 3
+        </label>
+      </div>
     </nav>
   );
 }

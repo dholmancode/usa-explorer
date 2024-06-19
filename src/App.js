@@ -9,11 +9,16 @@ import NavBar from './NavBar/NavBar';
 
 function App() {
   return (
-    <div className="App">
-      <NavBar />
-      <InfoBox />
-      <Map />
+    <div className="Main">
+     <div className="App">
+        <div className="explorer">
+          <NavBar />
+          <Map />
+          </div>
+         <InfoBox className="InfoBox" />
+      </div>
     </div>
+
   );
 }
 

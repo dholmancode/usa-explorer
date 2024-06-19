@@ -1,7 +1,9 @@
 /* src/InfoBox/InfoBox.css */
 .info-box {
-    border: 1px solid #ccc;
-    padding: 16px;
-    margin: 16px;
+  margin: 20px;
+  border-radius: 20px;
+  height: 90%;
+  padding: 10px 10px;
+  background-color: bisque;
+  width: 50%;
   }
-  

@@ -1,7 +1,60 @@
 /* src/NavBar/NavBar.css */
 .nav-bar {
-    border: 1px solid #ccc;
-    padding: 16px;
-    margin: 16px;
+    height: 90px;
+    padding: 10px 20px;
+    margin: 20px;
+    background-color: rgb(155, 155, 155);
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
   }
-  
+
+  /* src/NavBar/NavBar.css */
+
+.checkbox-container {
+  margin-top: 0px;
+  display: flex;
+}
+
+.checkbox-container label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.search-container {
+  margin-top: 0px;
+}
+
+.search-container input[type="text"] {
+  padding: 8px;
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+.search-container button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-container button:hover {
+  background-color: #45a049;
+}
+
+@media (max-width: 1080px) {
+  .nav-bar {
+display: flex;
+flex-direction: column;
+}
+}
