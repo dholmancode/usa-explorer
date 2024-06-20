@@ -60,9 +60,6 @@
     font-family:'Times New Roman', Times, serif;
   }
 
-  .reset-button {
-  }
-
   .reset-button button {
     flex-direction: row;
     line-height: 0;

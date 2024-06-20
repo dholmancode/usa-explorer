@@ -2,8 +2,20 @@
 .info-box {
   margin: 20px;
   border-radius: 20px;
-  height: 90%;
+  height: 100%;
   padding: 10px 10px;
   background-color: bisque;
   width: 50%;
   }
+
+.park-images {
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+}
+
+.park-images img{
+  width: auto;
+  height: 200px;
+  margin: 20px;
+}
