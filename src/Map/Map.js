@@ -1,5 +1,3 @@
-// Map.js
-
 import React, { useState, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { feature, mesh } from 'topojson-client';
@@ -13,6 +11,7 @@ function Map({ onParkSelect }) {
   const mapRef = useRef(null);
   const zoomBehavior = useRef(null);
   const [parksData, setParksData] = useState([]);
+  const [selectedPark, setSelectedPark] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,26 +36,20 @@ function Map({ onParkSelect }) {
     if (!zoomBehavior.current) {
       zoomBehavior.current = zoom()
         .scaleExtent([1, 2000])
-        .on('zoom', zoomed);
+        .on('zoom', (event) => {
+          mapRef.current.attr('transform', event.transform);
+          updateCircles(event.transform.k);
+        });
     }
-
-    function zoomed(event) {
-      mapRef.current.attr('transform', event.transform);
-      updateCircles(event.transform.k);
-    }
-
-    const updateCircles = (zoomLevel) => {
-      mapRef.current.selectAll('circle')
-        .attr('r', 9 / zoomLevel); // Adjust circle size based on zoom level
-    };
 
     const svg = d3.select(svgRef.current);
 
     svg.selectAll('*').remove();
 
-    const newSvg = svg.append('svg')
+    const newSvg = svg
       .attr('viewBox', `0 0 ${width} ${height}`)
-      .style('z-index', 1);
+      .attr('width', width)
+      .attr('height', height);
 
     const map = newSvg.append('g')
       .attr('class', 'map-container');
@@ -88,6 +81,7 @@ function Map({ onParkSelect }) {
         .data(parksData)
         .enter()
         .append('circle')
+        .attr('data-id', d => d.id) // Add data-id attribute for unique identification
         .attr('cx', d => {
           const coords = projection([parseFloat(d.longitude), parseFloat(d.latitude)]);
           return coords ? coords[0] : -9999; // Handle missing projection cases
@@ -96,11 +90,13 @@ function Map({ onParkSelect }) {
           const coords = projection([parseFloat(d.longitude), parseFloat(d.latitude)]);
           return coords ? coords[1] : -9999; // Handle missing projection cases
         })
-        .attr('r', 5)
+        .attr('r', 8)
         .attr('fill', 'red')
         .attr('stroke', 'black')
         .attr('stroke-width', 0)
         .on('click', (event, d) => {
+          zoomToPark(d); // Zoom to the selected park
+          setSelectedPark(d); // Update selected park state
           onParkSelect(d); // Send selected park back to App.js
         })
         .on('mouseover', (event, d) => {
@@ -110,19 +106,63 @@ function Map({ onParkSelect }) {
             .attr('fill', 'orange');
         })
         .on('mouseout', (event, d) => {
+          const isSelected = selectedPark && d.id === selectedPark.id;
+          const fillColor = isSelected ? 'orange' : 'red';
           d3.select(event.target)
             .transition()
             .duration(100)
-            .attr('fill', 'red');
+            .attr('fill', fillColor);
         });
     }
 
-    newSvg.call(zoomBehavior.current);
+    newSvg.call(zoomBehavior.current); // Attach zoom behavior to the SVG
 
     return () => {
-      d3.select(svgRef.current).selectAll('svg').remove();
+      d3.select(svgRef.current).selectAll('*').remove();
     };
   }, [parksData, onParkSelect]);
+
+  useEffect(() => {
+    if (selectedPark) {
+      d3.selectAll('circle').classed('park-selected', false);
+      d3.select(`[data-id='${selectedPark.id}']`).classed('park-selected', true);
+    }
+  }, [selectedPark]);
+
+  const updateCircles = (zoomLevel) => {
+    mapRef.current.selectAll('circle')
+      .attr('r', d => {
+        if (selectedPark && d.id === selectedPark.id) {
+          return 10 / zoomLevel; // Increase size for selected park
+        } else {
+          return 12 / zoomLevel; // Normal size for other parks
+        }
+      });
+  };
+
+  const zoomToPark = (park) => {
+    const width = 975;
+    const height = 610;
+    const scale = 29; // Adjust this scale as needed
+    const projection = d3.geoAlbersUsa()
+      .scale(1100)
+      .translate([width / 2, height / 2]);
+
+    const [x, y] = projection([parseFloat(park.longitude), parseFloat(park.latitude)]);
+
+    d3.select(svgRef.current)
+      .transition()
+      .duration(750)
+      .call(
+        zoomBehavior.current.transform,
+        d3.zoomIdentity
+          .translate(width / 2, height / 2)
+          .scale(scale)
+          .translate(-x, -y)
+      ).on('end', () => { // Ensure circles are updated after the zoom transition
+        updateCircles(scale);
+      });
+  };
 
   const handleZoomIn = () => {
     d3.select(svgRef.current)
@@ -156,7 +196,7 @@ function Map({ onParkSelect }) {
           <button onClick={handleReset}>Reset</button>
         </div>
       </div>
-      <div ref={svgRef}></div>
+      <svg ref={svgRef}></svg>
     </div>
   );
 }
