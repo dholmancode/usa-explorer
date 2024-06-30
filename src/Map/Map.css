@@ -4,7 +4,7 @@
   border-radius: 20px;
   height: 70%;
   padding: 10px 10px;
-  background-color: rgb(109, 177, 255);
+  background-color: rgb(61, 152, 255);
 }
 
 .map svg {
@@ -73,7 +73,7 @@
 
 /* Styling for the dots */
 .map-container circle {
-  fill: #ff634760; /* Change this color to your preference */
+  fill: #ff6347; /* Change this color to your preference */
   stroke: black;
   stroke-width: 0.001px;
   transition: 0.3s;
@@ -100,13 +100,12 @@
 
 circle.park-selected {
   fill: rgba(255, 255, 0, 0.795); /* Adjust this as needed */
-  animation: pulse 3s infinite;
 }
 
 .map-container circle {
   fill: #ff634760; /* Change this color to your preference */
   stroke: black;
-  stroke-width: 0.001px;
+  stroke-width: 0.00px;
   cursor: pointer;
   transition: fill 0.3s ease-out;
 }
@@ -118,17 +117,43 @@ circle.park-selected {
 
 @keyframes pulse {
   0% {
-    r: 0.05%;
+    opacity: 1;
   }
   50% {
-    r: 0.1%;
+    opacity: .51;
   }
   100% {
-    r: 0.05%;
+    opacity: 1;
   }
 }
 
 circle.park-selected {
   fill: rgba(255, 255, 0, 0.795); /* Adjust this as needed */
-  animation: pulse 5s infinite;
+  animation: pulse 2s infinite;
+}
+
+.map-container path {
+  fill: linear-gradient(180deg, red, yellow) !important;
+}
+
+.tooltip {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 8px;
+  border: 1px solid #ccc;
+  pointer-events: none;
+  font-size: 14px;
+}
+
+g {
+  fill: rgba(0, 0, 255, 0.0);
+    position: relative;
+  background-image: url('../assets/US-Satellite-Image.svg');
+  background-size: cover; /* Ensure the SVG covers the entire map */
+}
+
+.map-container {
+  position: relative;
+  background-image: url('../assets/US-Satellite-Image.svg');
+  background-size: cover; /* Ensure the SVG covers the entire map */
 }

@@ -6,6 +6,7 @@
   padding: 10px 10px;
   background-color: bisque;
   width: 50%;
+  overflow: scroll;
   }
 
 .park-images {
