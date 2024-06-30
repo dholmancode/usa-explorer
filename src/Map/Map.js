@@ -115,15 +115,15 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
     .attr('xlink:href', usSatelliteImage)
     .attr('width', width * 0.5)   // Scale down the width
     .attr('height', height * 0.5) // Scale down the height
-    .attr('x', width * .053)      // Center horizontally by adjusting x position
-    .attr('y', height * 0.058)     // Center vertically by adjusting y position
-    .attr('transform', 'scale(1.645)'); // Scale the image down by 50%
+    .attr('x', width * .0557)      // Center horizontally by adjusting x position
+    .attr('y', height * 0.0589)     // Center vertically by adjusting y position
+    .attr('transform', 'scale(1.637)'); // Scale the image down by 50%
   
 
     map.append('path')
       .datum(feature(usaTopoJSON, usaTopoJSON.objects.nation))
       .attr('stroke', 'black')
-      .attr('stroke-width', 1.5)
+      .attr('stroke-width', .5)
       .attr('fill', '')
       .attr('d', path);
 

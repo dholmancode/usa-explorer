@@ -4,7 +4,18 @@
   border-radius: 20px;
   height: 70%;
   padding: 10px 10px;
-  background-color: rgb(61, 152, 255);
+  background-color: #f5f5f5; /* fallback for older browsers */
+  background-image: linear-gradient(to bottom, #baccd7, #012f4c); /* gradient colors */
+  animation: oceanGradient 2s ease-in-out infinite alternate; /* animation properties */
+}
+
+@keyframes oceanGradient {
+  0% {
+      background-position: 0% 0%;
+  }
+  100% {
+      background-position: 46% 100%;
+  }
 }
 
 .map svg {
