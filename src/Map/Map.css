@@ -2,21 +2,12 @@
 .map {
   margin: 20px;
   border-radius: 20px;
-  height: 70%;
-  padding: 10px 10px;
-  background-color: #f5f5f5; /* fallback for older browsers */
-  background-image: linear-gradient(to bottom, #baccd7, #012f4c); /* gradient colors */
-  animation: oceanGradient 2s ease-in-out infinite alternate; /* animation properties */
+  border: 1px solid;
+  height: 560px;
+  padding: 40px;
+  background-color: #f5f5f500; /* fallback for older browsers */
 }
 
-@keyframes oceanGradient {
-  0% {
-      background-position: 0% 0%;
-  }
-  100% {
-      background-position: 46% 100%;
-  }
-}
 
 .map svg {
   margin: 0 auto;
@@ -38,20 +29,26 @@
 
 .map-controls {
   position: absolute;
-  bottom: 10px;
-  left: 10px;
-  z-index: 10; /* Ensure controls are above the map */
   align-items: center;
-  justify-content: center;
   display: flex;
+  justify-content: flex-end;
   flex-direction: column;
+  z-index: 1000 !important;
+  bottom: 30px !important;
+  left: 30px ;
 }
 
 .map-controls button {
-  margin: 5px;
   padding: 0px 0px;
   border: none;
   cursor: pointer;
+  opacity: 80%;
+  transition: 1s ease;
+  z-index: 1000 !important;
+}
+
+.map-controls button:hover {
+  opacity: 100%;
 }
 
 .zoom-controls {
@@ -64,31 +61,41 @@
   align-items: center;
   text-align: center;
   justify-content: center;
-  border-radius: 200px;
+  border-radius: 6px;
   font-size: 19px;
   font-weight: 700;
-  padding: 20px;
-  font-family: 'Times New Roman', Times, serif;
+  padding: 13px 30px;
+  font-family: 'Nunito', sans-serif; /* Change to Nunito font */
+  margin: 5px;
+  width: 75px;
+  transition: .5s ease;
+}
+
+.zoom-controls button:hover {
+  background: rgb(255, 200, 0); /* gradient colors */
 }
 
 .reset-button button {
   flex-direction: row;
   line-height: 0;
+  width: 100px;
   text-align: center;
-  border-radius: 200px;
-  font-size: 19px;
+  border-radius: 6px;
+  font-size: 16px;
   font-weight: 700;
-  padding: 20px;
-  font-family: 'Times New Roman', Times, serif;
+  padding: 13px 20px;
+  margin: 5px;
+  font-family: 'Nunito', sans-serif; /* Change to Nunito font */
+  transition: .5s ease;
+  background: white;
 }
 
-/* Styling for the dots */
-.map-container circle {
-  fill: #ff6347; /* Change this color to your preference */
-  stroke: black;
-  stroke-width: 0.001px;
-  transition: 0.3s;
-  cursor: pointer;
+/* Import Nunito font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
+
+
+.reset-button button:hover {
+  background: rgb(255, 200, 0); /* gradient colors */
 }
 
 /* Styling for the dots on hover */
@@ -109,62 +116,68 @@
   }
 }
 
+
 circle.park-selected {
   fill: rgba(255, 255, 0, 0.795); /* Adjust this as needed */
 }
 
+/* Define keyframes for animating fill */
+
+
+/* Apply animation to circles */
 .map-container circle {
-  fill: #ff634760; /* Change this color to your preference */
+  background-image: url("pin.svg");
+  fill: rgba(18, 156, 241, 0.847);
   stroke: black;
-  stroke-width: 0.00px;
+  stroke-width: 0.02px;
   cursor: pointer;
-  transition: fill 0.3s ease-out;
+  transition: stroke, fill 0.3s ease-out;
 }
 
 .map-container circle:hover {
-  fill: rgba(255, 219, 153, 0.7);
-  z-index: -200;
+  fill: rgb(255, 221, 0);
 }
 
 @keyframes pulse {
   0% {
     opacity: 1;
+    stroke-width: .09px;
   }
   50% {
-    opacity: .51;
+    opacity: 0.9;
+    stroke-width: .3px;
   }
   100% {
     opacity: 1;
+    stroke-width: .09px;
   }
 }
 
 circle.park-selected {
-  fill: rgba(255, 255, 0, 0.795); /* Adjust this as needed */
   animation: pulse 2s infinite;
-}
-
-.map-container path {
-  fill: linear-gradient(180deg, red, yellow) !important;
+  stroke: #fff200;
+  stroke-width: .2px;
+  position: absolute;
 }
 
 .tooltip {
   position: absolute;
   background-color: rgba(255, 255, 255, 0.9);
   padding: 8px;
-  border: 1px solid #ccc;
+  border-radius: 30px;
   pointer-events: none;
   font-size: 14px;
+  transform: translateY(-20px);
+  font-family: 'Nunito', sans-serif; /* Change to Nunito font */
+  margin-left: 10px;
 }
 
 g {
-  fill: rgba(0, 0, 255, 0.0);
-    position: relative;
-  background-image: url('../assets/US-Satellite-Image.svg');
-  background-size: cover; /* Ensure the SVG covers the entire map */
+  fill: rgba(255, 255, 255, 0);
+
 }
 
 .map-container {
   position: relative;
-  background-image: url('../assets/US-Satellite-Image.svg');
   background-size: cover; /* Ensure the SVG covers the entire map */
 }

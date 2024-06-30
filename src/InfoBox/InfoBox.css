@@ -1,13 +1,22 @@
 /* src/InfoBox/InfoBox.css */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;700&display=swap');
+
 .info-box {
   margin: 20px;
   border-radius: 20px;
-  height: 100%;
+  margin-top: 140px;
+  height: 621px;
   padding: 10px 10px;
-  background-color: bisque;
+  background:linear-gradient(rgb(255, 255, 255), rgb(103, 103, 103));
   width: 50%;
   overflow: scroll;
-  }
+  font-family: 'Montserrat', sans-serif; /* Change to Montserrat font */
+  font-weight: 100;
+}
+
+.search-container input {
+  font-family: 'Montserrat', sans-serif; /* Change to Montserrat font */
+}
 
 .park-images {
   display: flex;
@@ -15,8 +24,34 @@
   overflow-x: scroll;
 }
 
-.park-images img{
+.park-images img {
   width: auto;
   height: 200px;
   margin: 20px;
+}
+
+.info-box h2 {
+  font-size: 30px;
+  font-weight: 700;
+
+}
+
+.info-box h3 {
+  font-size: 30px;
+  margin-bottom: 5px;
+}
+
+.info-box h4 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.info-box p {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.info-box li {
+  font-size: 20px;
+  font-weight: 400;
 }

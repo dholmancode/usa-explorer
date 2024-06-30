@@ -115,7 +115,7 @@ function NavBar({ onStateSelect, parksData, onParkSelect }) {
         const selectedPark = parksData.find(park => park.fullName === item);
         if (selectedPark) {
           onParkSelect(selectedPark);
-          setSelectedItemDisplay(selectedPark.fullName); // Update selectedItemDisplay with park name
+          setSearchTerm(selectedPark.fullName);
         }
       }
     }
@@ -149,10 +149,11 @@ function NavBar({ onStateSelect, parksData, onParkSelect }) {
 
   return (
     <nav className="nav-bar">
+      <div div className='top-bar-container'>
       <div className="search-container" ref={searchContainerRef}>
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Search by park or state..."
           value={searchTerm}
           onChange={handleSearchChange}
         />
@@ -170,10 +171,11 @@ function NavBar({ onStateSelect, parksData, onParkSelect }) {
           </div>
         )}
       </div>
-      <div className="state-selection">
-        <div className="selected-state">
+      <div className="selected-state">
           {selectedItemDisplay && <h5>{selectedItemDisplay}</h5>}
         </div>
+      </div>
+      <div className="state-selection">
         <div className="dropdown-container">
           <label htmlFor="state-dropdown"></label>
           <select
@@ -182,7 +184,7 @@ function NavBar({ onStateSelect, parksData, onParkSelect }) {
             onChange={handleStateChange}
             value={selectedState}
           >
-            <option value="">--Select a State--</option>
+            <option value="">-- State --</option>
             {states.map((state, index) => (
               <option key={index} value={state}>
                 {getStateFullName(state)}

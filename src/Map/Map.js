@@ -5,7 +5,7 @@ import { zoom, zoomIdentity } from 'd3-zoom';
 import usaTopoJSON from '../usaGeoJSON.json';
 import { fetchParksData } from '../apiService';
 import './Map.css';
-import usSatelliteImage from '../assets/US-Satellite-Image.svg'; // Import your SVG image
+import usSatelliteImage from '../assets/US-Sat.svg'; // Import your SVG image
 
 
 // Coordinates for the center of each state (approximate)
@@ -115,29 +115,29 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
     .attr('xlink:href', usSatelliteImage)
     .attr('width', width * 0.5)   // Scale down the width
     .attr('height', height * 0.5) // Scale down the height
-    .attr('x', width * .0557)      // Center horizontally by adjusting x position
-    .attr('y', height * 0.0589)     // Center vertically by adjusting y position
-    .attr('transform', 'scale(1.637)'); // Scale the image down by 50%
+    .attr('x', width * .037)      // Center horizontally by adjusting x position
+    .attr('y', height * 0.053)     // Center vertically by adjusting y position
+    .attr('transform', 'scale(1.69)'); // Scale the image down by 50%
   
 
     map.append('path')
       .datum(feature(usaTopoJSON, usaTopoJSON.objects.nation))
-      .attr('stroke', 'black')
-      .attr('stroke-width', .5)
+      .attr('stroke', '')
+      .attr('stroke-width', 0)
       .attr('fill', '')
       .attr('d', path);
 
     map.append('path')
       .datum(mesh(usaTopoJSON, usaTopoJSON.objects.counties, (a, b) => a !== b && (a.id / 1000 | 0) === (b.id / 1000 | 0)))
-      .attr('stroke', 'black')
-      .attr('stroke-width', .06)
+      .attr('stroke', 'white')
+      .attr('stroke-width', .02)
       .attr('fill', '')
       .attr('d', path);
 
     map.append('path')
       .datum(mesh(usaTopoJSON, usaTopoJSON.objects.states, (a, b) => a !== b))
-      .attr('stroke', 'black')
-      .attr('stroke-width', 1)
+      .attr('stroke', 'white')
+      .attr('stroke-width', .4)
       .attr('fill', 'none')
       .attr('d', path);
 
@@ -300,7 +300,7 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
           <button onClick={handleZoomOut}>-</button>
         </div>
         <div className='reset-button'>
-          <button onClick={handleReset}>Reset</button>
+          <button onClick={handleReset}>RESET</button>
         </div>
       </div>
       <svg ref={svgRef}></svg>

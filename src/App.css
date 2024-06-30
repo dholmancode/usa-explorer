@@ -1,19 +1,35 @@
 .Main {
-  background-color: #034354;
-  height: 100vh;
+  height:100vh;
   padding-top: 5%;
   display: flex;
   justify-content: center;
+  background: linear-gradient(25deg, #5bbae6, #4f56ba, #626ade, #0b767a); /* gradient colors */
+  background-size: 500% 100%; /* Set the gradient size */
+  /* Animation */
+  animation: colorChange 5`0s infinite ease-in-out;
 }
 
+@keyframes colorChange {
+  0% {
+    background-position: 0% 50%; /* Starting gradient position */
+  }
+  50% {
+    background-position: 85% 50%; /* Ending gradient position */
+  }
+  100% {
+    background-position: 0% 50%; /* Ending gradient position */
+  }
+}
+
+
+
 .App {
-  background-color: #034354;
   display: flex;
   flex-direction: row;
   justify-content: start;
   align-content: center;
   height: 700px;
-  border: 8px solid #e4b531;
+  border: 0px solid #e4b531;
   border-radius: 30px;
   width: 96vw;
 }
@@ -22,13 +38,7 @@
   border: 1px solid #ccc;
 }
 
-.Main {
-  background-color: #034354;
-  height: 100vh;
-}
-
 .explorer {
-height: 100%;
-width: 60vw;
+height: 80vh;
+width: 80vw;
 }
-

@@ -1,39 +1,25 @@
 .nav-bar {
-  height: 90px;
   padding: 10px 20px;
   margin: 20px;
-  background-color: rgb(155, 155, 155);
+  background-color: rgba(255, 255, 255, 0);
   border-radius: 20px;
   display: flex;
-  justify-content: space-between;
-  align-content: center;
-  align-items: center;
-}
-
-.checkbox-container {
-  margin-top: 0px;
-  display: flex;
-}
-
-.checkbox-container label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.checkbox-container input[type="checkbox"] {
-  margin-right: 5px;
+  flex-direction: column;
+  justify-content: flex-end;
+  z-index: 205;
 }
 
 .search-container {
-  position: relative; /* Added for suggestions positioning */
+  position: relative;
   margin-top: 0px;
 }
 
 .search-container input[type="text"] {
   padding: 8px;
   width: 200px;
+  height: 20px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 40px;
   margin-right: 5px;
 }
 
@@ -51,16 +37,16 @@
 }
 
 .search-container .suggestions {
-  position: absolute; /* To position it below the input */
+  position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
-  max-height: 150px; /* Limit height */
-  overflow-y: auto; /* Enable scroll */
+  max-height: 150px;
+  overflow-y: auto;
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: white;
-  z-index: 1000; /* Ensure it appears above other elements */
+  z-index: 1000;
 }
 
 .search-container .suggestion-item {
@@ -73,25 +59,69 @@
 }
 
 .dropdown-container {
-  margin-left: 10px;
-  display: absolute;
+  margin-top: 10px;
+  border-radius: 20px;
+  justify-content: center;
+  align-items: center;
+
 }
 
 .dropdown-container label {
   margin-right: 5px;
+  border-radius: 20px;
+  width: 300px;
+  font-family: 'Nunito', sans-serif; /* Change to Nunito font */
+}
+
+#state-dropdown {
+  font-family: 'Nunito', sans-serif; /* Change to Nunito font */
+}
+
+.suggestions {
+    font-family: 'Nunito', sans-serif; /* Change to Nunito font */
+    border-radius: 20px;
+    width: 660px o !important;
+    height: 690px;
 }
 
 .dropdown-container select {
   padding: 5px;
+  border-radius: 20px;
+width: 150px;
+align-items: center;
+text-align: center;
 }
 
 .state-selection {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
 }
 
 .state-selection h5 {
-font-size: 30px;
+  font-size: 30px;
 }
+
+.top-bar-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.selected-state {
+  position: absolute;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 30px;
+  margin-left: 240px; /* Adjust as needed */
+  margin-top: -35px; /* Adjust as needed */
+  font-family: 'Nunito', sans-serif; /* Change to Nunito font */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
+
+/* Integrate Google Fonts here */
+.Main {
+  font-family: 'Material Symbols Outlined', sans-serif;
+}
+

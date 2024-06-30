@@ -48,13 +48,12 @@ function InfoBox({ park }) {
           <h2>{park.fullName}</h2>
           <div>
             <div className="additional-info">
-              <p>{parkInfo ? `${parkInfo.town}, ${getStateFullName(parkInfo.state)}` : 'Location not available'}</p>
+              <h4>{parkInfo ? `${parkInfo.town}, ${getStateFullName(parkInfo.state)}` : 'Location not available'}</h4>
             </div>
           </div>
           <div>
             <p>{park.description || 'Description not available'}</p>
             <div className="additional-info">
-              <h3>Images:</h3>
               {error ? (
                 <p className="error">{error}</p>
               ) : parkInfo && parkInfo.images && parkInfo.images.length > 0 ? (
@@ -68,7 +67,7 @@ function InfoBox({ park }) {
               )}
             </div>
             <div className="activities">
-              <h3>Activities:</h3>
+              <h3>Activities</h3>
               {error ? (
                 <p className="error">{error}</p>
               ) : parkInfo && parkInfo.activities && parkInfo.activities.length > 0 ? (
@@ -82,32 +81,19 @@ function InfoBox({ park }) {
               )}
             </div>
             <div className="additional-info">
-              <h3>Weather:</h3>
+              <h3>Weather</h3>
               <p>{parkInfo ? parkInfo.weatherInfo || 'No weather information available' : 'No weather information available'}</p>
             </div>
             <div className="additional-info">
-              <h3>Contact Information:</h3>
               {parkInfo && parkInfo.contacts ? (
                 <div>
                   {parkInfo.contacts.phoneNumbers && parkInfo.contacts.phoneNumbers.length > 0 && (
                     <div>
-                      <h4>Phone Numbers:</h4>
+                      <h3>Phone Numbers</h3>
                       <ul>
                         {parkInfo.contacts.phoneNumbers.map((phone, index) => (
                           <li key={index}>
                             {phone.type}: {phone.phoneNumber}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {parkInfo.contacts.emailAddresses && parkInfo.contacts.emailAddresses.length > 0 && (
-                    <div>
-                      <h4>Email Addresses:</h4>
-                      <ul>
-                        {parkInfo.contacts.emailAddresses.map((email, index) => (
-                          <li key={index}>
-                            {email.description}: {email.emailAddress}
                           </li>
                         ))}
                       </ul>
@@ -119,27 +105,13 @@ function InfoBox({ park }) {
               )}
             </div>
             <div className="additional-info">
-              <h3>Alerts:</h3>
-              {parkInfo && parkInfo.alerts && parkInfo.alerts.length > 0 ? (
-                <ul>
-                  {parkInfo.alerts.map((alert, index) => (
-                    <li key={index}>
-                      <strong>{alert.title}</strong>: {alert.description}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No alerts available</p>
-              )}
-            </div>
-            <div className="additional-info">
-              <h3>Directions:</h3>
+              <h3>Directions</h3>
               <p>{parkInfo ? parkInfo.directionsInfo || 'No directions available' : 'No directions available'}</p>
             </div>
           </div>
         </>
       ) : (
-        <p>No park selected</p>
+        <p className='select-a-park'>Select a park</p>
       )}
     </div>
   );

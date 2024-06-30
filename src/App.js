@@ -35,12 +35,15 @@ function App() {
         <div className="explorer">
           {/* NavBar for state and park selection */}
           <NavBar
+            className="NavBar"
             onStateSelect={handleStateSelect}
             parksData={parksData}
             onParkSelect={handleParkSelect}
           />
           {/* Map component displaying the map and park locations */}
           <Map
+          className="Map"
+
             selectedState={selectedState}
             selectedPark={selectedPark}
             onParkSelect={handleParkSelect}
