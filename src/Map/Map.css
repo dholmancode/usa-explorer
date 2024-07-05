@@ -1,13 +1,13 @@
 /* src/Map/Map.css */
 .map {
-  margin: 20px;
   border-radius: 20px;
   border: 1px solid;
-  height: 560px;
   padding: 40px;
   background-color: #f5f5f500; /* fallback for older browsers */
-}
+  width: 50vw;
+  margin: 10px;
 
+}
 
 .map svg {
   margin: 0 auto;
@@ -98,10 +98,7 @@
   background: rgb(255, 200, 0); /* gradient colors */
 }
 
-/* Styling for the dots on hover */
-.map-container circle:hover {
-  fill: rgb(255, 219, 153);
-}
+
 
 /* Pulsing animation for selected park */
 @keyframes pulse {
@@ -118,7 +115,7 @@
 
 
 circle.park-selected {
-  fill: rgba(255, 255, 0, 0.795); /* Adjust this as needed */
+  fill: rgba(255, 187, 0, 0.795); /* Adjust this as needed */
 }
 
 /* Define keyframes for animating fill */
@@ -126,10 +123,9 @@ circle.park-selected {
 
 /* Apply animation to circles */
 .map-container circle {
-  background-image: url("pin.svg");
-  fill: rgba(18, 156, 241, 0.847);
-  stroke: black;
-  stroke-width: 0.02px;
+  fill: rgb(0, 190, 187);
+  stroke: rgba(255, 179, 0, 0.682);
+  stroke-width: 0.06px;
   cursor: pointer;
   transition: stroke, fill 0.3s ease-out;
 }
@@ -141,15 +137,15 @@ circle.park-selected {
 @keyframes pulse {
   0% {
     opacity: 1;
-    stroke-width: .09px;
+    stroke-width: .08px;
   }
   50% {
     opacity: 0.9;
-    stroke-width: .3px;
+    stroke-width: .5px;
   }
   100% {
     opacity: 1;
-    stroke-width: .09px;
+    stroke-width: .08px;
   }
 }
 

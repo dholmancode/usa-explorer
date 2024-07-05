@@ -6,7 +6,7 @@
   background: linear-gradient(25deg, #5bbae6, #4f56ba, #626ade, #0b767a); /* gradient colors */
   background-size: 500% 100%; /* Set the gradient size */
   /* Animation */
-  animation: colorChange 5`0s infinite ease-in-out;
+  animation: colorChange 50s infinite ease-in-out;
 }
 
 @keyframes colorChange {
@@ -26,9 +26,9 @@
 .App {
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: center;
   align-content: center;
-  height: 700px;
+  height: 80vh;
   border: 0px solid #e4b531;
   border-radius: 30px;
   width: 96vw;
@@ -39,6 +39,15 @@
 }
 
 .explorer {
-height: 80vh;
-width: 80vw;
+  width: 30vw;
+}
+
+@media (max-width: 950px) {
+.App {
+  flex-direction: column-reverse;
+}
+.explorer {
+  width: 90vw;
+  margin-top: 30px;
+}
 }

@@ -32,14 +32,7 @@ function App() {
   return (
     <div className="Main">
       <div className="App">
-        <div className="explorer">
           {/* NavBar for state and park selection */}
-          <NavBar
-            className="NavBar"
-            onStateSelect={handleStateSelect}
-            parksData={parksData}
-            onParkSelect={handleParkSelect}
-          />
           {/* Map component displaying the map and park locations */}
           <Map
           className="Map"
@@ -48,9 +41,16 @@ function App() {
             selectedPark={selectedPark}
             onParkSelect={handleParkSelect}
           />
-        </div>
-        {/* InfoBox component displaying details of the selected park */}
-        <InfoBox park={selectedPark} />
+        <div className="explorer">
+        <NavBar
+            className="NavBar"
+            onStateSelect={handleStateSelect}
+            parksData={parksData}
+            onParkSelect={handleParkSelect}
+          />
+      <InfoBox park={selectedPark} />
+      </div>
+
       </div>
     </div>
   );

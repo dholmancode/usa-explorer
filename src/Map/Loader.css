@@ -1,0 +1,46 @@
+/* src/components/Loader.css */
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+  .message {
+    font-size: 24px;
+    color: #333;
+    margin: 10px 0;
+    animation: fadeIn 1s ease-in-out infinite alternate, gradientBG 3s ease-in-out infinite;
+    background: linear-gradient(45deg, #ffcc00, #ffb300, #ff5bfc, #ffcc00);
+    background-size: 200% 200%;
+    width: 400px;
+    height: 100%;
+    font-family: 'Nunito', sans-serif; /* Change to Nunito font */
+    border-radius: 300px;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0.6;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes gradientBG {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  /* Import Nunito font from Google Fonts */
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
+  

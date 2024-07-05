@@ -2,38 +2,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;700&display=swap');
 
 .info-box {
-  margin: 20px;
   border-radius: 20px;
-  margin-top: 140px;
-  height: 621px;
+  height: 70vh;
   padding: 10px 10px;
-  background:linear-gradient(rgb(255, 255, 255), rgb(103, 103, 103));
-  width: 50%;
-  overflow: scroll;
+  background-size: 100% 300%;
+  background-attachment: fixed;
+  overflow-y: scroll;
   font-family: 'Montserrat', sans-serif; /* Change to Montserrat font */
   font-weight: 100;
+  margin: 10px;
+}
+
+.select-a-park {
+
 }
 
 .search-container input {
   font-family: 'Montserrat', sans-serif; /* Change to Montserrat font */
 }
 
-.park-images {
-  display: flex;
-  flex-direction: row;
-  overflow-x: scroll;
-}
-
-.park-images img {
-  width: auto;
-  height: 200px;
-  margin: 20px;
-}
-
-.info-box h2 {
-  font-size: 30px;
+.info-box h1 {
+  font-size: 25px;
   font-weight: 700;
-
 }
 
 .info-box h3 {
@@ -42,8 +32,8 @@
 }
 
 .info-box h4 {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .info-box p {
@@ -54,4 +44,118 @@
 .info-box li {
   font-size: 20px;
   font-weight: 400;
+}
+
+/*INFO PIECES*/
+
+.additional-info {
+background: white;
+padding: 10px;
+margin: 10px 0px;
+border-radius: 10px;
+transition: .8s ease;
+}
+
+.additional-info:hover {
+  transform: scale(1.01);
+  cursor: pointer;
+  }
+
+  .park-title {
+    border-radius: 10px 60px 10px 10px;
+    background-color: rgb(41, 41, 41);
+    font-size: 30px !important;
+    font-weight: 600 !important;
+    color: #e7e7e7;
+    padding: 10px 15px;
+}
+
+.park-title h1{
+  }
+.park-town-state h4 {
+  margin: 1px;
+  font-weight: 300 !important;
+}
+.park-town-state  {
+  border-radius: 300px;
+  width: fit-content;
+  padding: 3px 15px;  
+  color: white;
+  background-color: rgb(41, 41, 41);
+}
+.park-description{
+
+}
+/* Custom scrollbar styling */
+.park-images-scroll::-webkit-scrollbar {
+  height: 20px; /* Height of horizontal scrollbar */
+  border-radius: 1000px;
+  width: 30px;
+}
+
+.park-images-scroll::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, #4cd70c84 20px, transparent 80%); /* Gradient line background */
+  border-radius: 200px;
+  width: 100%;
+}
+
+.park-images-scroll::-webkit-scrollbar-thumb {
+  background: url('../assets/Bison.svg') center center no-repeat; /* Center the SVG */
+  background-size: 20px 20px; /* Size of the SVG */
+  overflow: visible !important;
+  border-radius: 10px;
+  transition: transform 0.3s ease; /* Smooth scale transition */
+  width: 30px;
+}
+
+.park-images-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #55555500; /* Fallback color on hover */
+  transform: scale(1.2);
+}
+
+
+
+
+.park-images {
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  background: linear-gradient(90deg, #f4a460, #ffd15d);
+}
+.park-images img {
+  width: auto;
+  height: 200px;
+  border-radius: 5px;
+  margin: 10px;
+
+}
+.activities{
+  background: white;
+
+
+}
+.weather{
+
+}
+.phone-number{
+
+
+}
+.directions {
+
+}
+
+
+@media (max-width: 950px) {
+  .info-box {
+    border-radius: 20px;
+    height: 70vh;
+    padding: 10px 10px;
+    background-size: 100% 300%;
+    background-attachment: fixed;
+    overflow-y: scroll;
+    font-family: 'Montserrat', sans-serif; /* Change to Montserrat font */
+    font-weight: 100;
+    margin: 10px;
+  }
 }

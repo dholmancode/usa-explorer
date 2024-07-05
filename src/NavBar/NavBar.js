@@ -171,10 +171,6 @@ function NavBar({ onStateSelect, parksData, onParkSelect }) {
           </div>
         )}
       </div>
-      <div className="selected-state">
-          {selectedItemDisplay && <h5>{selectedItemDisplay}</h5>}
-        </div>
-      </div>
       <div className="state-selection">
         <div className="dropdown-container">
           <label htmlFor="state-dropdown"></label>
@@ -191,6 +187,10 @@ function NavBar({ onStateSelect, parksData, onParkSelect }) {
               </option>
             ))}
           </select>
+        </div>
+      </div>
+      <div className="selected-state">
+          {selectedItemDisplay && <h5>{selectedItemDisplay}</h5>}
         </div>
       </div>
     </nav>

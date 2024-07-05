@@ -4,9 +4,9 @@ import { feature, mesh } from 'topojson-client';
 import { zoom, zoomIdentity } from 'd3-zoom';
 import usaTopoJSON from '../usaGeoJSON.json';
 import { fetchParksData } from '../apiService';
+import Loader from './Loader.js';
 import './Map.css';
 import usSatelliteImage from '../assets/US-Sat.svg'; // Import your SVG image
-
 
 // Coordinates for the center of each state (approximate)
 const stateCenters = {
@@ -67,17 +67,21 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
   const mapRef = useRef(null);
   const zoomBehavior = useRef(null);
   const [parksData, setParksData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       const parks = await fetchParksData();
       setParksData(parks);
+      setLoading(false);
     };
 
     fetchData();
   }, []);
 
   useEffect(() => {
+    if (loading) return; // Do not proceed if still loading
+
     const width = 975;
     const height = 610;
 
@@ -110,15 +114,13 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
       .attr('class', 'map-container');
     mapRef.current = map;
 
-    // Add background image inside the map container
     map.append('image')
-    .attr('xlink:href', usSatelliteImage)
-    .attr('width', width * 0.5)   // Scale down the width
-    .attr('height', height * 0.5) // Scale down the height
-    .attr('x', width * .037)      // Center horizontally by adjusting x position
-    .attr('y', height * 0.053)     // Center vertically by adjusting y position
-    .attr('transform', 'scale(1.69)'); // Scale the image down by 50%
-  
+      .attr('xlink:href', usSatelliteImage)
+      .attr('width', width * 0.5)
+      .attr('height', height * 0.5)
+      .attr('x', width * .037)
+      .attr('y', height * 0.053)
+      .attr('transform', 'scale(1.69)');
 
     map.append('path')
       .datum(feature(usaTopoJSON, usaTopoJSON.objects.nation))
@@ -136,10 +138,18 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
 
     map.append('path')
       .datum(mesh(usaTopoJSON, usaTopoJSON.objects.states, (a, b) => a !== b))
+      .attr('class', 'state-boundary')
       .attr('stroke', 'white')
       .attr('stroke-width', .4)
       .attr('fill', 'none')
       .attr('d', path);
+
+    map.selectAll('.state')
+      .data(feature(usaTopoJSON, usaTopoJSON.objects.states).features)
+      .enter().append('path')
+      .attr('class', 'state')
+      .attr('d', path)
+      .attr('fill', d => d.properties.name === selectedState ? 'rgba(255, 196, 0, 0.447' : ''); // Apply your custom color to the selected state
 
     const tooltip = d3.select('body').append('div')
       .attr('class', 'tooltip');
@@ -161,7 +171,7 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
         .attr('r', 8)
         .attr('fill', 'red')
         .attr('stroke', 'black')
-        .attr('stroke-width', 0)
+        .attr('stroke-width', 1)
         .on('click', (event, d) => {
           zoomToPark(d);
           onParkSelect(d);
@@ -191,7 +201,7 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
             .attr('fill', fillColor);
           tooltip.style('opacity', 0);
         })
-        .classed('park-selected', d => selectedPark && d.id === selectedPark.id); // Add the park-selected class conditionally
+        .classed('park-selected', d => selectedPark && d.id === selectedPark.id);
     }
 
     newSvg.call(zoomBehavior.current);
@@ -200,7 +210,7 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
       d3.select(svgRef.current).selectAll('*').remove();
       tooltip.remove();
     };
-  }, [parksData, onParkSelect, selectedPark]);
+  }, [parksData, onParkSelect, selectedPark, selectedState, loading]);
 
   useEffect(() => {
     if (selectedPark) {
@@ -216,7 +226,7 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
   const zoomToPark = (park) => {
     const width = 975;
     const height = 610;
-    const scale = 16;
+    const scale = 7;
     const projection = d3.geoAlbersUsa()
       .scale(1100)
       .translate([width / 2, height / 2]);
@@ -240,16 +250,16 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
   const zoomToState = (state) => {
     const center = stateCenters[state];
     if (!center) return;
-  
+
     const width = 975;
     const height = 610;
-    const scale = 4.5;
+    const scale = 3;
     const projection = d3.geoAlbersUsa()
       .scale(1100)
       .translate([width / 2, height / 2]);
-  
+
     const [x, y] = projection(center);
-  
+
     d3.select(svgRef.current)
       .transition()
       .duration(3000)
@@ -260,10 +270,14 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
           .scale(scale)
           .translate(-x, -y)
       ).on('end', () => {
-        updateCircles(scale); // Adjust circle sizes if needed
+        updateCircles(scale);
       });
+
+    mapRef.current.selectAll('.state')
+      .attr('fill', d => d.properties.name === state ? 'rgba(255, 196, 0, 0.447' : ''); // Apply your custom color to the selected state
   };
-  
+
+
 
   useEffect(() => {
     if (selectedState) {
@@ -294,16 +308,20 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
 
   return (
     <div className='map'>
-      <div className='map-controls'>
-        <div className='zoom-controls'>
-          <button onClick={handleZoomIn}>+</button>
-          <button onClick={handleZoomOut}>-</button>
-        </div>
-        <div className='reset-button'>
-          <button onClick={handleReset}>RESET</button>
-        </div>
-      </div>
-      <svg ref={svgRef}></svg>
+      {loading ? <Loader /> : (
+        <>
+          <div className='map-controls'>
+            <div className='zoom-controls'>
+              <button onClick={handleZoomIn}>+</button>
+              <button onClick={handleZoomOut}>-</button>
+            </div>
+            <div className='reset-button'>
+              <button onClick={handleReset}>RESET</button>
+            </div>
+          </div>
+          <svg ref={svgRef}></svg>
+        </>
+      )}
     </div>
   );
 }
