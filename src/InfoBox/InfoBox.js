@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './InfoBox.css';
 import { fetchParkInfo } from '../apiService';
+import Arrow from '../assets/Arrow.svg';
 
 const stateAbbreviations = {
   AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California', CO: 'Colorado',
@@ -17,6 +18,7 @@ const stateAbbreviations = {
 function InfoBox({ park }) {
   const [parkInfo, setParkInfo] = useState(null);
   const [error, setError] = useState(null);
+  const [isActivitiesOpen, setIsActivitiesOpen] = useState(false);
   const infoBoxRef = useRef(null);
 
   useEffect(() => {
@@ -56,6 +58,10 @@ function InfoBox({ park }) {
     return stateAbbreviations[stateAbbreviation] || stateAbbreviation;
   };
 
+  const toggleActivities = () => {
+    setIsActivitiesOpen(!isActivitiesOpen);
+  };
+
   return (
     <div className="info-box" ref={infoBoxRef}>
       {park ? (
@@ -66,7 +72,7 @@ function InfoBox({ park }) {
               <h4>📍 {parkInfo ? `${parkInfo.town}, ${getStateFullName(parkInfo.state)}` : 'Location not available'}</h4>
             </div>
           </div>
-          <div className="additional-info park-images">
+          <div className="additional-info" id="park-images">
               {error ? (
                 <p className="error">{error}</p>
               ) : parkInfo && parkInfo.images && parkInfo.images.length > 0 ? (
@@ -81,22 +87,28 @@ function InfoBox({ park }) {
             </div>
             <p className='park-description additional-info'>{park.description || 'Description not available'}</p>
             <div className="additional-info activities">
-              <h3>Activities</h3>
-              {error ? (
-                <p className="error">{error}</p>
-              ) : parkInfo && parkInfo.activities && parkInfo.activities.length > 0 ? (
-                <ul>
-                  {parkInfo.activities.map((activity, index) => (
-                    <li key={index}>{activity.name}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No activities available</p>
-              )}
+            <h3 onClick={toggleActivities} className="accordion-title">
+  Activities
+  <img src={Arrow} alt="Toggle Arrow" className={`arrow-icon ${isActivitiesOpen ? 'open' : ''}`} />
+</h3>
+<div className={`accordion-content ${isActivitiesOpen ? 'open' : ''}`}>
+  {error ? (
+    <p className="error">{error}</p>
+  ) : parkInfo && parkInfo.activities && parkInfo.activities.length > 0 ? (
+    <ul>
+      {parkInfo.activities.map((activity, index) => (
+        <li key={index}>{activity.name}</li>
+      ))}
+    </ul>
+  ) : (
+    <p>No activities available</p>
+  )}
+</div>
+
             </div>
             <div className="weather additional-info">
               <h3>Weather</h3>
-              <p>{parkInfo ? parkInfo.weatherInfo || 'No weather information available' : 'No weather information available'}</p>
+              <p className='weather-desc'>{parkInfo ? parkInfo.weatherInfo || 'No weather information available' : 'No weather information available'}</p>
             </div>
             <div className="additional-info phone-number">
               {parkInfo && parkInfo.contacts ? (
