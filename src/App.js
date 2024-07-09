@@ -48,19 +48,16 @@ function App() {
           <div className="AccordionContent">
             <p>
               <strong>
-            Select a park on the map on the left, or use the search feature on the 
+            Select a park on the map, or use the search features on the 
             right to explore USA National Parks. 
             </strong>
             <br></br>
             <br></br>
-            This is a React Application.
+This is a react application that fetches data from the National Parks Service API to provide information about each park. 
             <br></br>
             <button onClick={() => window.open("https://github.com/dholmancode/usa-explorer", "_blank")}>
   View Code &#8594;
 </button>
-            <br></br>
-            <br></br>
-This app fetches data from the National Parks Service API to provide information about each park. 
             <br></br>
             <br></br>
 The map uses a GeoAlbers projection and D3.js for interactive features, with GeoJSON defining country, state, and county borders.
