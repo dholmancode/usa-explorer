@@ -1,23 +1,38 @@
 /* src/components/Loader.css */
 .loader {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+    background-color: #5b9fff;
+    background-position: 100vw;
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
   }
-  
+
+  .loader-container {
+    width: 100vw;
+    height: 100vh;
+  }
+
   .message {
     font-size: 24px;
     color: #333;
     margin: 10px 0;
-    animation: fadeIn 1s ease-in-out infinite alternate, gradientBG 3s ease-in-out infinite;
+    animation: fadeIn 3s ease-in-out infinite alternate, gradientBG 3s ease-in-out infinite;
     background: linear-gradient(45deg, #ffcc00, #ffb300, #ff5bfc, #ffcc00);
     background-size: 200% 200%;
-    width: 400px;
-    height: 100%;
+    width: 60vw;
+    height: 80px;
     font-family: 'Nunito', sans-serif; /* Change to Nunito font */
     border-radius: 300px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
   }
   
   @keyframes fadeIn {

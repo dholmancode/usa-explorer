@@ -1,12 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;700&display=swap');
+
 .Main {
-  height:100vh;
-  padding-top: 5%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   background: linear-gradient(25deg, #5bbae6, #4f56ba, #626ade, #0b767a); /* gradient colors */
   background-size: 500% 100%; /* Set the gradient size */
   /* Animation */
   animation: colorChange 50s infinite ease-in-out;
+  text-align: center;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 100;
+  padding: 20px;
+  background: rgb(46, 46, 46);
+  color: white;
+  border-radius: 20px;
+  height: 150px;
+  margin: 10px;
+  transition: 0.5s ease; /* Smooth transition for all properties */
+}
+
+header h1 {
+  font-size: 30px;
+}
+
+header button {
+  border-radius: 200px;
+  border: none;
+  width: 150px;
+  height: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 10px; /* Adjust margin as needed */
+  font-family: 'Montserrat', sans-serif;
+  background: rgb(104, 104, 104);
+  color: white;
+  transition: .5s ease;
+}
+
+header button:hover {
+  background: rgb(104, 104, 104);
+  color: white;
+  background: white;
+  color: rgb(104, 104, 104);
+}
+
+.AccordionContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* Adjust margin as needed */
+}
+
+.Accordion {
+  width: 80%; /* Adjust width as needed */
+  max-width: 600px; /* Max width for responsiveness */
+  border: 0px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+  transition: 0.8s ease-in-out; /* Smooth transition for height change */
+  max-height: 0; /* Initially hide accordion content */
+  background-color: white;
+  margin-top: -50px;
+  font-family: 'Montserrat', sans-serif;
+  text-align: left;
+}
+
+.Accordion button {
+  border-radius: 200px;
+  border: none;
+  width: 150px;
+  height: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 10px; /* Adjust margin as needed */
+  font-family: 'Montserrat', sans-serif;
+  background: rgb(0, 99, 110);
+  color: white;
+  transition: .5s ease;
+}
+
+.Accordion button:hover {
+  background: rgb(100, 100, 100);
+  color: white;
+}
+
+.Accordion.open {
+  max-height: 500px; /* Expand accordion to max height when open */
+}
+
+.AccordionContent {
+  padding: 10px;
+  font-size: 15px;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 70px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+footer img {
+  width: 200px;
+  height: auto;
+}
+
+footer p {
+  background: #5e1f00;
+  padding: 10px 25px;
+  border-radius: 200px;
+  color: white;
 }
 
 @keyframes colorChange {
@@ -21,17 +133,15 @@
   }
 }
 
-
-
 .App {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-content: center;
-  height: 80vh;
   border: 0px solid #e4b531;
   border-radius: 30px;
-  width: 96vw;
+  width: 100vw;
+  margin-top: 50px;
 }
 
 .Tool {
@@ -43,11 +153,47 @@
 }
 
 @media (max-width: 950px) {
-.App {
-  flex-direction: column-reverse;
-}
-.explorer {
-  width: 90vw;
-  margin-top: 30px;
-}
+  .App {
+    flex-direction: column;
+    justify-content: center;
+  }
+  body {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  body::-webkit-scrollbar {
+    width: 10px;
+    background: #f1f1f157;
+    border-radius: 10px;
+    width: 15px;
+  }
+
+  body::-webkit-scrollbar-track {
+    background: #00000057;
+    border-radius: 10px;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background: #ff5a088a;
+    border-radius: 100px;
+    width: 20px;
+  }
+
+  header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 100;
+    padding: 20px;
+    margin: 0px;
+    background: rgb(46, 46, 46);
+    color: white;
+    margin: 30px;
+  }
+
+  header h1 {
+    font-size: 25px;
+  }
 }

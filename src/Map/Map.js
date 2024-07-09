@@ -308,7 +308,7 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
 
   return (
     <div className='map'>
-      {loading ? <Loader /> : (
+      {loading ? <Loader className='loader-container' /> : (
         <>
           <div className='map-controls'>
             <div className='zoom-controls'>

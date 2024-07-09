@@ -3,12 +3,12 @@ import './NavBar.css';
 import { fetchParksData } from '../apiService';
 
 const states = [
-  'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 
-  'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 
-  'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 
-  'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 
-  'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 
-  'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 
+  'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
+  'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa',
+  'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan',
+  'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
+  'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma',
+  'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee',
   'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
 ];
 
@@ -28,14 +28,13 @@ const getStateFullName = (stateAbbreviation) => {
   return stateAbbreviations[stateAbbreviation] || stateAbbreviation;
 };
 
-function NavBar({ onStateSelect, parksData, onParkSelect }) {
+function NavBar({ onStateSelect, parksData, onParkSelect, selectedPark }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const searchContainerRef = useRef(null);
   const [parkStates, setParkStates] = useState({});
   const [selectedState, setSelectedState] = useState('');
-  const [selectedItemDisplay, setSelectedItemDisplay] = useState('');
 
   useEffect(() => {
     const fetchParkStates = async () => {
@@ -91,6 +90,17 @@ function NavBar({ onStateSelect, parksData, onParkSelect }) {
     }
   }, [searchTerm, isSearching, parkStates]);
 
+  useEffect(() => {
+    if (selectedPark) {
+      const selectedState = Object.keys(parkStates).find(state =>
+        parkStates[state].includes(selectedPark.fullName)
+      );
+      if (selectedState) {
+        setSelectedState(getStateFullName(selectedState));
+      }
+    }
+  }, [selectedPark, parkStates]);
+
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
     setIsSearching(true);
@@ -102,20 +112,18 @@ function NavBar({ onStateSelect, parksData, onParkSelect }) {
 
     if (states.includes(item)) {
       setSelectedState(item);
-      setSelectedItemDisplay(getStateFullName(item));
       onStateSelect(item);
     } else {
       const selectedState = Object.keys(parkStates).find(state =>
         parkStates[state].includes(item)
       );
       if (selectedState) {
-        setSelectedState(selectedState);
-        setSelectedItemDisplay(item);
+        setSelectedState(getStateFullName(selectedState));
         onStateSelect(selectedState);
         const selectedPark = parksData.find(park => park.fullName === item);
         if (selectedPark) {
           onParkSelect(selectedPark);
-          setSearchTerm(selectedPark.fullName);
+          setSearchTerm(''); // Clear search term when selecting a park
         }
       }
     }
@@ -124,73 +132,53 @@ function NavBar({ onStateSelect, parksData, onParkSelect }) {
   const handleStateChange = (event) => {
     const state = event.target.value;
     setSelectedState(state);
-    setSelectedItemDisplay(getStateFullName(state));
     onStateSelect(state);
     setSearchTerm('');
     setIsSearching(false);
     setSuggestions([]);
   };
 
-  useEffect(() => {
-    // Clear search and dropdown on park selection
-    setSearchTerm('');
-    setIsSearching(false);
-    setSelectedState('');
-    setSelectedItemDisplay('');
-    setSuggestions([]);
-  }, [onParkSelect]);
-
-  useEffect(() => {
-    // Update display immediately when selectedState changes
-    if (selectedState) {
-      setSelectedItemDisplay(getStateFullName(selectedState));
-    }
-  }, [selectedState]);
-
   return (
     <nav className="nav-bar">
-      <div div className='top-bar-container'>
-      <div className="search-container" ref={searchContainerRef}>
-        <input
-          type="text"
-          placeholder="Search by park or state..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-        {isSearching && (
-          <div className="suggestions">
-            {suggestions.map((suggestion, index) => (
-              <div
-                key={index}
-                className="suggestion-item"
-                onClick={() => handleSearchSelect(suggestion)}
-              >
-                {suggestion}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-      <div className="state-selection">
-        <div className="dropdown-container">
-          <label htmlFor="state-dropdown"></label>
-          <select
-            id="state-dropdown"
-            name="states"
-            onChange={handleStateChange}
-            value={selectedState}
-          >
-            <option value="">-- State --</option>
-            {states.map((state, index) => (
-              <option key={index} value={state}>
-                {getStateFullName(state)}
-              </option>
-            ))}
-          </select>
+      <div className='top-bar-container'>
+        <div className="search-container" ref={searchContainerRef}>
+          <input
+            type="text"
+            placeholder="Search by park or state..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+          {isSearching && (
+            <div className="suggestions">
+              {suggestions.map((suggestion, index) => (
+                <div
+                  key={index}
+                  className="suggestion-item"
+                  onClick={() => handleSearchSelect(suggestion)}
+                >
+                  {suggestion}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      </div>
-      <div className="selected-state">
-          {selectedItemDisplay && <h5>{selectedItemDisplay}</h5>}
+        <div className="state-selection">
+          <div className="dropdown-container">
+            <label htmlFor="state-dropdown"></label>
+            <select
+              id="state-dropdown"
+              name="states"
+              onChange={handleStateChange}
+              value={selectedState}
+            >
+              <option value="">-- State --</option>
+              {states.map((state, index) => (
+                <option key={index} value={state}>
+                  {state}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
     </nav>

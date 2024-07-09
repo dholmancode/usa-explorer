@@ -1,3 +1,5 @@
+/* InfoBox.css */
+
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;700&display=swap');
 
 .info-box {
@@ -5,11 +7,30 @@
   height: 70vh;
   padding: 15px 15px;
   background-size: 100% 300%;
-  background-attachment: fixed;
   overflow-y: scroll;
   font-family: 'Montserrat', sans-serif;
   font-weight: 100;
   margin: 0px;
+  text-align: left;
+  transition: 1.5s ease-in-out;
+}
+
+.info-box-hidden {
+  transform: translateX(0%) !important;
+  opacity: 0 !important;
+  height: 0;
+
+}
+
+.translate-out {
+  transform: translateX(10%) !important;
+  opacity: 0 !important;
+
+}
+
+.translate-in {
+  transform: translateX(0);
+  opacity: 1;
 }
 
 /* Custom infoBox scrollbar */
@@ -20,14 +41,14 @@
   padding: 20px;
 }
 
-.info-box::-webkit-scrollbar-track {
-}
-
 .info-box::-webkit-scrollbar-thumb {
   background-color: rgb(46, 46, 46);
   border-radius: 10px;
   margin: 20px;
 }
+
+/* Other styles remain unchanged */
+
 
 .select-a-park {
 
@@ -129,7 +150,7 @@
 }
 
 .park-images-scroll::-webkit-scrollbar-thumb {
-  background: #ffa200; 
+  background: #5e1f00;
   border-radius: 10px;
   margin: 20px;
 }
@@ -161,7 +182,7 @@
   flex-direction: row;
   justify-content: flex-start;
   cursor: pointer;
-  background-color: rgb(46, 46, 46);
+  background: #5e1f00;
   margin-top: 5px;
   padding: 10px;
   border-radius: 5px;
@@ -177,24 +198,29 @@
 }
 
 .accordion-title:hover {
-  background-color: rgb(83, 83, 83);
+  background-color: rgb(46, 46, 46);
 }
 
 .accordion-content {
   max-height: 0;
   overflow: scroll;
-  transition: max-height .8s ease, background-color .8s ease;
+  transition: max-height .8s ease, background-color .8s ease, padding 1s ease;
   border-radius: 20px;
   padding: 15px;
   color: white;
+  background: #5e1f0000;
 
 }
 
 .accordion-content.open {
   max-height: 800px; /* Adjust based on the expected height of the content */
-  background-color: rgb(83, 83, 83);
+  background: #5e1f00;
   color: white;
+  padding: 15px;
+}
 
+.weather {
+  margin-top: -50px;
 }
 
 .weather h3{
@@ -210,26 +236,33 @@
   background-color: rgb(46, 46, 46);
   color: white;
   border-radius: 20px;
-
 }
 
 .phone-number {
+  background-color: rgb(46, 46, 46);
+  color: white;
 }
 
 .directions {
+  background-color: rgb(46, 46, 46);
+  color: white;
 }
 
 
 @media (max-width: 950px) {
   .info-box {
     border-radius: 20px;
-    height: 70vh;
+    border: 2px solid;
     padding: 10px 10px;
     background-size: 100% 300%;
     background-attachment: fixed;
+    background-color: #00c3ff27;
     overflow-y: scroll;
     font-family: 'Montserrat', sans-serif;
     font-weight: 100;
-    margin: 10px;
+    margin: 5px;
+    width: 85vw;
   }
+
+
 }
