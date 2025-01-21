@@ -53,7 +53,7 @@ function App() {
             </strong>
             <br></br>
             <br></br>
-This is a react application that fetches data from the National Parks Service API to provide information about each park. 
+This is a React application that fetches data from the National Parks Service API to provide information about each park. 
             <br></br>
             <button onClick={() => window.open("https://github.com/dholmancode/usa-explorer", "_blank")}>
   View Code &#8594;
