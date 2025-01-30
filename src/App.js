@@ -91,7 +91,6 @@ The map uses a GeoAlbers projection and D3.js for interactive features, with Geo
           rel="noopener noreferrer"
         >
           <img src={logo} alt="Danny Holman Logo" />
-          <p>dannyholmanmedia.com</p>
         </a>
       </footer>
     </div>

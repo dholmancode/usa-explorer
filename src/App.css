@@ -140,7 +140,6 @@ footer p {
   align-content: center;
   border: 0px solid #e4b531;
   border-radius: 30px;
-  width: 100vw;
   margin-top: 50px;
 }
 
@@ -154,9 +153,10 @@ footer p {
 
 @media (max-width: 950px) {
   .App {
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: center;
   }
+
   body {
     overflow-y: auto;
     overflow-x: hidden;

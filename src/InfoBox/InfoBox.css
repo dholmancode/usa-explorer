@@ -2,6 +2,45 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;700&display=swap');
 
+
+/* --------- NEW TAB BUTTONS --------
+------------------------------------- */
+.tab-menu {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  gap: 8px; /* Space between buttons */
+  justify-items: center; /* Center buttons horizontally */
+  margin-bottom: 10px; /* Space between tabs and content */
+}
+
+.tab-button {
+  cursor: pointer;
+  width: 100%; /* Make all buttons equal width */
+  padding: 10px;
+  color: white;
+  background-color: #525252;
+  border: none;
+  border-radius: 225px;
+  font-size: 16px;
+  text-align: center;
+  transition: 0.6s ease;
+  font-family: 'Montserrat', sans-serif;
+
+}
+
+.tab-button:hover {
+  background-color: #000000;
+}
+
+.tab-button.active {
+  background-color: #bd7800;
+  color: white;
+  font-weight: bold;
+}
+
+
+/* --------- MAIN --------
+------------------------------------- */
 .info-box {
   border-radius: 20px;
   height: 70vh;
@@ -48,10 +87,17 @@
 }
 
 /* Other styles remain unchanged */
+.park-images::-webkit-scrollbar {
+  height: 10px;
+  background: #f1f1f100; 
+  border-radius: 10px;
+  padding: 20px;
+}
 
-
-.select-a-park {
-
+.park-images-box::-webkit-scrollbar-thumb {
+  background-color: rgb(46, 46, 46);
+  border-radius: 10px;
+  margin: 20px;
 }
 
 .search-container input {
@@ -97,16 +143,12 @@
 }
 
 .park-title {
-  border-radius: 10px 60px 10px 10px;
-  background-color: rgb(46, 46, 46);
   font-size: 30px !important;
   font-weight: 600 !important;
   color: #e7e7e7;
   padding: 10px 15px;
 }
 
-.park-title h1 {
-}
 
 .park-town-state h4 {
   margin: 1px;
@@ -134,120 +176,17 @@
 
 .park-images {
   display: flex;
-  flex-direction: row;
-  overflow-x: scroll;
-}
-
-/* Custom horizontal scrollbar */
-.park-images-scroll::-webkit-scrollbar {
-  height: 10px;
-  background: #f1f1f157; 
-  border-radius: 10px;
-  padding: 20px;
-}
-
-.park-images-scroll::-webkit-scrollbar-track {
-}
-
-.park-images-scroll::-webkit-scrollbar-thumb {
-  background: #5e1f00;
-  border-radius: 10px;
-  margin: 20px;
+  flex-direction: column;
+  overflow-y: scroll;
 }
 
 .park-images img {
-  width: auto;
-  height: 200px;
+  width: 90%;
+  height: auto;
   border-radius: 5px;
   margin: 10px;
+  border-radius: 10px;;
 }
-
-.activities {
-
-}
-
-.arrow-icon {
-  width: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin-left: 10px;
-  transition: transform 0.3s ease;
-}
-
-.accordion-title {
-  display: flex;
-  color: white;
-  flex-direction: row;
-  justify-content: flex-start;
-  cursor: pointer;
-  background: #5e1f00;
-  margin-top: 5px;
-  padding: 10px;
-  border-radius: 5px;
-  transition: 0.3s ease;
-}
-
-.accordion-title .arrow-icon {
-  transition: transform 0.3s ease;
-}
-
-.accordion-title .arrow-icon.open {
-  transform: rotate(-90deg);
-}
-
-.accordion-title:hover {
-  background-color: rgb(46, 46, 46);
-}
-
-.accordion-content {
-  max-height: 0;
-  overflow: scroll;
-  transition: max-height .8s ease, background-color .8s ease, padding 1s ease;
-  border-radius: 20px;
-  padding: 15px;
-  color: white;
-  background: #5e1f0000;
-
-}
-
-.accordion-content.open {
-  max-height: 800px; /* Adjust based on the expected height of the content */
-  background: #5e1f00;
-  color: white;
-  padding: 15px;
-}
-
-.weather {
-  margin-top: -50px;
-}
-
-.weather h3{
-  background: linear-gradient(45deg, #3096f0, #ffb300);
-  width: fit-content;
-  border-radius: 200px;
-  padding: 10px 30px;
-  color: white;
-}
-
-.weather-desc {
-  padding: 20px;
-  background-color: rgb(46, 46, 46);
-  color: white;
-  border-radius: 20px;
-}
-
-.phone-number {
-  background-color: rgb(46, 46, 46);
-  color: white;
-}
-
-.directions {
-  background-color: rgb(46, 46, 46);
-  color: white;
-}
-
 
 @media (max-width: 950px) {
   .info-box {
