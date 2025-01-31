@@ -78,7 +78,7 @@ function InfoBox({ park, stateSelected }) {
             ))}
           </div>
           <h1 className="park-title">{currentPark.fullName}</h1>
-          <h4>📍 {parkInfo?.town}, {parkInfo?.state}</h4>
+          <h4 className="park-loc">📍 {parkInfo?.town}, {parkInfo?.state}</h4>
           {/* Tab Content */}
           <div className="tab-content">
             {activeTab === 'Images' && (

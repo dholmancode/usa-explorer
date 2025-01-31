@@ -151,9 +151,9 @@ footer p {
   width: 30vw;
 }
 
-@media (max-width: 950px) {
+@media (max-width: 1160px) {
   .App {
-    flex-direction: column-reverse;
+    flex-direction: column;
     justify-content: center;
   }
 
