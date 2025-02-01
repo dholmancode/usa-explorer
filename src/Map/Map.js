@@ -8,6 +8,8 @@ import Loader from './Loader.js';
 import './Map.css';
 import usSatelliteImage from '../assets/US-Sat.svg'; // Import your SVG image
 
+
+
 // Coordinates for the center of each state (approximate)
 const stateCenters = {
   'Alabama': [-86.9023, 32.3182],
@@ -132,7 +134,7 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
     map.append('path')
       .datum(mesh(usaTopoJSON, usaTopoJSON.objects.counties, (a, b) => a !== b && (a.id / 1000 | 0) === (b.id / 1000 | 0)))
       .attr('stroke', 'white')
-      .attr('stroke-width', .02)
+      .attr('stroke-width', .01)
       .attr('fill', '')
       .attr('d', path);
 
@@ -140,7 +142,7 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
       .datum(mesh(usaTopoJSON, usaTopoJSON.objects.states, (a, b) => a !== b))
       .attr('class', 'state-boundary')
       .attr('stroke', 'white')
-      .attr('stroke-width', .4)
+      .attr('stroke-width', .2)
       .attr('fill', 'none')
       .attr('d', path);
 
@@ -226,7 +228,7 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
   const zoomToPark = (park) => {
     const width = 975;
     const height = 610;
-    const scale = 7;
+    const scale = 30;
     const projection = d3.geoAlbersUsa()
       .scale(1100)
       .translate([width / 2, height / 2]);
@@ -316,9 +318,11 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
               <button onClick={handleZoomOut}>-</button>
             </div>
             <div className='reset-button'>
-              <button onClick={handleReset}>RESET</button>
+              <button onClick={handleReset}>Reset</button>
             </div>
           </div>
+
+          {/* Map Display */}
           <svg ref={svgRef}></svg>
         </>
       )}
