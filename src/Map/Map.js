@@ -6,9 +6,7 @@ import usaTopoJSON from '../usaGeoJSON.json';
 import { fetchParksData } from '../apiService';
 import Loader from './Loader.js';
 import './Map.css';
-import usSatelliteImage from '../assets/US-Sat.svg'; // Import your SVG image
-
-
+import usSatelliteImage from '../assets/US-Sat.svg';
 
 // Coordinates for the center of each state (approximate)
 const stateCenters = {
@@ -64,7 +62,7 @@ const stateCenters = {
   'Wyoming': [-107.2903, 43.0759]
 };
 
-function Map({ selectedState, selectedPark, onParkSelect }) {
+function Map({ selectedState, selectedPark, onParkSelect, filters }) {
   const svgRef = useRef(null);
   const mapRef = useRef(null);
   const zoomBehavior = useRef(null);
@@ -151,14 +149,19 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
       .enter().append('path')
       .attr('class', 'state')
       .attr('d', path)
-      .attr('fill', d => d.properties.name === selectedState ? 'rgba(255, 196, 0, 0.447' : ''); // Apply your custom color to the selected state
+      .attr('fill', d => d.properties.name === selectedState ? 'rgba(255, 196, 0, 0.447)' : ''); // Apply your custom color to the selected state
 
     const tooltip = d3.select('body').append('div')
       .attr('class', 'tooltip');
 
     if (parksData.length > 0) {
       map.selectAll('circle')
-        .data(parksData)
+        .data(parksData.filter(d => {
+          if (filters.historic && d.fullName.includes('Historic')) return true;
+          if (filters.park && d.fullName.includes('Park')) return true;
+          if (filters.other && !d.fullName.includes('Historic') && !d.fullName.includes('Park')) return true;
+          return false;
+        }))
         .enter()
         .append('circle')
         .attr('data-id', d => d.id)
@@ -170,8 +173,12 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
           const coords = projection([parseFloat(d.longitude), parseFloat(d.latitude)]);
           return coords ? coords[1] : -9999;
         })
-        .attr('r', 8)
-        .attr('fill', 'red')
+        .attr('r', 10)
+        .attr('fill', d => {
+          if (d.fullName.includes('Historic')) return 'blue';
+          if (d.fullName.includes('Park')) return 'green';
+          return 'red';
+        })
         .attr('stroke', 'black')
         .attr('stroke-width', 1)
         .on('click', (event, d) => {
@@ -196,7 +203,9 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
         })
         .on('mouseout', (event, d) => {
           const isSelected = selectedPark && d.id === selectedPark.id;
-          const fillColor = isSelected ? 'orange' : 'red';
+          const fillColor = isSelected ? 'orange' :
+            d.fullName.includes('Historic') ? 'blue' :
+            d.fullName.includes('Park') ? 'green' : 'red';
           d3.select(event.target)
             .transition()
             .duration(100)
@@ -212,7 +221,7 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
       d3.select(svgRef.current).selectAll('*').remove();
       tooltip.remove();
     };
-  }, [parksData, onParkSelect, selectedPark, selectedState, loading]);
+  }, [parksData, onParkSelect, selectedPark, selectedState, loading, filters]); // Add filters to dependency array
 
   useEffect(() => {
     if (selectedPark) {
@@ -222,7 +231,7 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
 
   const updateCircles = (zoomLevel) => {
     mapRef.current.selectAll('circle')
-      .attr('r', d => (selectedPark && d.id === selectedPark.id ? 10 : 8) / zoomLevel);
+      .attr('r', d => (selectedPark && d.id === selectedPark.id ? 10 : 10) / zoomLevel);
   };
 
   const zoomToPark = (park) => {
@@ -276,10 +285,8 @@ function Map({ selectedState, selectedPark, onParkSelect }) {
       });
 
     mapRef.current.selectAll('.state')
-      .attr('fill', d => d.properties.name === state ? 'rgba(255, 196, 0, 0.447' : ''); // Apply your custom color to the selected state
+      .attr('fill', d => d.properties.name === state ? 'rgba(255, 196, 0, 0.447)' : ''); // Apply your custom color to the selected state
   };
-
-
 
   useEffect(() => {
     if (selectedState) {

@@ -11,6 +11,15 @@ function App() {
   const [selectedState, setSelectedState] = useState('');
   const [parksData, setParksData] = useState([]);
   const [accordionOpen, setAccordionOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    historic: true,
+    park: true,
+    other: true,
+  });
+
+  const handleFilterChange = (updatedFilters) => {
+    setFilters(updatedFilters);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,6 +80,7 @@ The map uses a GeoAlbers projection and D3.js for interactive features, with Geo
           selectedState={selectedState}
           selectedPark={selectedPark}
           onParkSelect={handleParkSelect}
+          filters={filters} // Pass filters to Map
         />
         <div className="explorer">
           <NavBar
@@ -79,6 +89,7 @@ The map uses a GeoAlbers projection and D3.js for interactive features, with Geo
             parksData={parksData}
             onParkSelect={handleParkSelect}
             selectedPark={selectedPark} // Pass selectedPark to NavBar
+            onFilterChange={handleFilterChange}
           />
           <InfoBox park={selectedPark} stateSelected={selectedState} />
         </div>

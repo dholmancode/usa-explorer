@@ -120,9 +120,8 @@ circle.park-selected {
 
 /* Apply animation to circles */
 .map-container circle {
-  fill: rgb(255, 187, 0);
-  stroke: rgba(0, 0, 0, 0.682);
-  stroke-width: 0.01px;
+  stroke: rgba(0, 0, 0, 0.982);
+  stroke-width: 0.02px;
   cursor: pointer;
   transition: stroke, fill 0.3s ease-out;
 }

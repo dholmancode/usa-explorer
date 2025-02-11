@@ -28,13 +28,18 @@ const getStateFullName = (stateAbbreviation) => {
   return stateAbbreviations[stateAbbreviation] || stateAbbreviation;
 };
 
-function NavBar({ onStateSelect, parksData, onParkSelect, selectedPark }) {
+function NavBar({ onStateSelect, parksData, onParkSelect, selectedPark, onFilterChange }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const searchContainerRef = useRef(null);
   const [parkStates, setParkStates] = useState({});
   const [selectedState, setSelectedState] = useState('');
+  const [filters, setFilters] = useState({
+    historic: true,
+    park: true,
+    other: true,
+  });
 
   useEffect(() => {
     const fetchParkStates = async () => {
@@ -138,9 +143,44 @@ function NavBar({ onStateSelect, parksData, onParkSelect, selectedPark }) {
     setSuggestions([]);
   };
 
+  const handleFilterChange = (filterType) => {
+    const updatedFilters = {
+      ...filters,
+      [filterType]: !filters[filterType],
+    };
+    setFilters(updatedFilters);
+    onFilterChange(updatedFilters);
+  };
+
   return (
     <nav className="nav-bar">
       <div className='top-bar-container'>
+        <div className="filter-container">
+          <label>
+            <input
+              type="checkbox"
+              checked={filters.historic}
+              onChange={() => handleFilterChange('historic')}
+            />
+            Historic
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={filters.park}
+              onChange={() => handleFilterChange('park')}
+            />
+            Park
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={filters.other}
+              onChange={() => handleFilterChange('other')}
+            />
+            Other
+          </label>
+        </div>
         <div className="search-container" ref={searchContainerRef}>
           <input
             type="text"
