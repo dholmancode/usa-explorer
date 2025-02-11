@@ -82,17 +82,17 @@ function Map({ selectedState, selectedPark, onParkSelect, filters }) {
 
   useEffect(() => {
     if (loading) return; // Do not proceed if still loading
-  
+
     const width = 975;
     const height = 610;
-  
+
     const projection = d3.geoAlbersUsa()
       .scale(1100)
       .translate([width / 2, height / 2]);
-  
+
     const path = d3.geoPath()
       .projection(projection);
-  
+
     if (!zoomBehavior.current) {
       zoomBehavior.current = zoom()
         .scaleExtent([1, 2000])
@@ -102,20 +102,20 @@ function Map({ selectedState, selectedPark, onParkSelect, filters }) {
           updateCircles(event.transform.k);
         });
     }
-  
+
     const svg = d3.select(svgRef.current);
-  
+
     svg.selectAll('*').remove();
-  
+
     const newSvg = svg
       .attr('viewBox', `0 0 ${width} ${height}`)
       .attr('width', width)
       .attr('height', height);
-  
+
     const map = newSvg.append('g')
       .attr('class', 'map-container');
     mapRef.current = map;
-  
+
     // Render the map (paths, images, etc.)
     map.append('image')
       .attr('xlink:href', usSatelliteImage)
@@ -124,21 +124,21 @@ function Map({ selectedState, selectedPark, onParkSelect, filters }) {
       .attr('x', width * .037)
       .attr('y', height * 0.053)
       .attr('transform', 'scale(1.69)');
-  
+
     map.append('path')
       .datum(feature(usaTopoJSON, usaTopoJSON.objects.nation))
       .attr('stroke', '')
       .attr('stroke-width', 0)
       .attr('fill', '')
       .attr('d', path);
-  
+
     map.append('path')
       .datum(mesh(usaTopoJSON, usaTopoJSON.objects.counties, (a, b) => a !== b && (a.id / 1000 | 0) === (b.id / 1000 | 0)))
       .attr('stroke', 'white')
       .attr('stroke-width', .01)
       .attr('fill', '')
       .attr('d', path);
-  
+
     map.append('path')
       .datum(mesh(usaTopoJSON, usaTopoJSON.objects.states, (a, b) => a !== b))
       .attr('class', 'state-boundary')
@@ -146,14 +146,14 @@ function Map({ selectedState, selectedPark, onParkSelect, filters }) {
       .attr('stroke-width', .2)
       .attr('fill', 'none')
       .attr('d', path);
-  
+
     map.selectAll('.state')
       .data(feature(usaTopoJSON, usaTopoJSON.objects.states).features)
       .enter().append('path')
       .attr('class', 'state')
       .attr('d', path)
       .attr('fill', d => d.properties.name === selectedState ? 'rgba(255, 196, 0, 0.447)' : ''); // Apply your custom color to the selected state
-  
+
     const tooltip = d3.select('body').append('div')
       .attr('class', 'tooltip');
 
@@ -224,7 +224,7 @@ function Map({ selectedState, selectedPark, onParkSelect, filters }) {
           const coords = projection([parseFloat(d.longitude), parseFloat(d.latitude)]);
           return coords ? coords[1] : -9999;
         })
-        .attr('r', 10)
+        .attr('r', 10 / currentTransform.k) // Set initial radius based on current zoom level
         .attr('fill', d => getFillColor(d.designation || ''))
         .attr('stroke', 'black')
         .attr('stroke-width', 1)
@@ -242,15 +242,15 @@ function Map({ selectedState, selectedPark, onParkSelect, filters }) {
             tooltip
               .style('opacity', 1)
               .html(d.fullName)
-              .style('left', `${event.pageX + 10 }px`)
-              .style('top', `${event.pageY + 10 }px`);
+              .style('left', `${event.pageX + 3 }px`)
+              .style('top', `${event.pageY + 3 }px`);
           }
         })
         .on('mousemove', (event) => {
           if (tooltip) {
             tooltip
-              .style('left', `${event.pageX + 10 }px`)
-              .style('top', `${event.pageY + 10 }px`);
+              .style('left', `${event.pageX + 3 }px`)
+              .style('top', `${event.pageY + 3 }px`);
           }
         })
         .on('mouseout', (event, d) => {
