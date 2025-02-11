@@ -234,8 +234,4 @@ g {
     width: fit-content;
     padding: 11px 25px;
   }
-
-  .tooltip {
-    display: none;
-  }
 }

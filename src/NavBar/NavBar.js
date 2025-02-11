@@ -163,26 +163,22 @@ function NavBar({ onStateSelect, parksData, onParkSelect, selectedPark, onFilter
     <nav className="nav-bar">
       <div className='top-bar-container'>
 <div className="filter-container">
-  <fieldset>
-    <legend>Filter by Type:</legend>
     {[
-      { key: 'historic', label: 'Historical & Cultural Sites' },
-      { key: 'park', label: 'Parks & Reserves' },
-      { key: 'monument', label: 'Monuments & Special Areas' },
-      { key: 'water', label: 'Rivers & Waterways' },
-      { key: 'other', label: 'Other' }
-    ].map(({ key, label }) => (
-      <label key={key} className="filter-label">
+      { key: 'historic', label: 'Historical & Cultural Sites', className: 'filter-historic' },
+      { key: 'park', label: 'Parks & Reserves', className: 'filter-park' },
+      { key: 'monument', label: 'Monuments & Special Areas', className: 'filter-monument' },
+      { key: 'water', label: 'Rivers & Waterways', className: 'filter-water' },
+      { key: 'other', label: 'Other', className: 'filter-other' }
+    ].map(({ key, label, className }) => (
+      <label key={key} className={`filter-label ${className}`}>
         <input
           type="checkbox"
           checked={filters[key]}
           onChange={() => handleFilterChange(key)}
         />
         {label}
-        <br />
       </label>
     ))}
-  </fieldset>
 </div>
 
         <div className="search-container" ref={searchContainerRef}>
