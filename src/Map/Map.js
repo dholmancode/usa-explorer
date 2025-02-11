@@ -66,6 +66,7 @@ function Map({ selectedState, selectedPark, onParkSelect, filters }) {
   const svgRef = useRef(null);
   const mapRef = useRef(null);
   const zoomBehavior = useRef(null);
+  const currentTransform = useRef(d3.zoomIdentity); // Store the current zoom transform
   const [parksData, setParksData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -81,39 +82,41 @@ function Map({ selectedState, selectedPark, onParkSelect, filters }) {
 
   useEffect(() => {
     if (loading) return; // Do not proceed if still loading
-
+  
     const width = 975;
     const height = 610;
-
+  
     const projection = d3.geoAlbersUsa()
       .scale(1100)
       .translate([width / 2, height / 2]);
-
+  
     const path = d3.geoPath()
       .projection(projection);
-
+  
     if (!zoomBehavior.current) {
       zoomBehavior.current = zoom()
         .scaleExtent([1, 2000])
         .on('zoom', (event) => {
+          currentTransform.current = event.transform; // Update the stored transform
           mapRef.current.attr('transform', event.transform);
           updateCircles(event.transform.k);
         });
     }
-
+  
     const svg = d3.select(svgRef.current);
-
+  
     svg.selectAll('*').remove();
-
+  
     const newSvg = svg
       .attr('viewBox', `0 0 ${width} ${height}`)
       .attr('width', width)
       .attr('height', height);
-
+  
     const map = newSvg.append('g')
       .attr('class', 'map-container');
     mapRef.current = map;
-
+  
+    // Render the map (paths, images, etc.)
     map.append('image')
       .attr('xlink:href', usSatelliteImage)
       .attr('width', width * 0.5)
@@ -121,21 +124,21 @@ function Map({ selectedState, selectedPark, onParkSelect, filters }) {
       .attr('x', width * .037)
       .attr('y', height * 0.053)
       .attr('transform', 'scale(1.69)');
-
+  
     map.append('path')
       .datum(feature(usaTopoJSON, usaTopoJSON.objects.nation))
       .attr('stroke', '')
       .attr('stroke-width', 0)
       .attr('fill', '')
       .attr('d', path);
-
+  
     map.append('path')
       .datum(mesh(usaTopoJSON, usaTopoJSON.objects.counties, (a, b) => a !== b && (a.id / 1000 | 0) === (b.id / 1000 | 0)))
       .attr('stroke', 'white')
       .attr('stroke-width', .01)
       .attr('fill', '')
       .attr('d', path);
-
+  
     map.append('path')
       .datum(mesh(usaTopoJSON, usaTopoJSON.objects.states, (a, b) => a !== b))
       .attr('class', 'state-boundary')
@@ -143,18 +146,21 @@ function Map({ selectedState, selectedPark, onParkSelect, filters }) {
       .attr('stroke-width', .2)
       .attr('fill', 'none')
       .attr('d', path);
-
+  
     map.selectAll('.state')
       .data(feature(usaTopoJSON, usaTopoJSON.objects.states).features)
       .enter().append('path')
       .attr('class', 'state')
       .attr('d', path)
       .attr('fill', d => d.properties.name === selectedState ? 'rgba(255, 196, 0, 0.447)' : ''); // Apply your custom color to the selected state
-
+  
     const tooltip = d3.select('body').append('div')
       .attr('class', 'tooltip');
 
+      
       if (parksData.length > 0) {
+        const currentTransform = d3.zoomTransform(svgRef.current);
+
         const matchesFilter = (designation) => {
 
           if (filters.historic && (
@@ -204,68 +210,69 @@ function Map({ selectedState, selectedPark, onParkSelect, filters }) {
           if (designation.includes('Monument') || designation.includes('Recreation Area') || designation.includes('Scenic Trail') || designation.includes('Parkway')) return '#6A3E77';
           return '#D9A441'; // Default color for other types
         };
-      
-        map.selectAll('circle')
-          .data(parksData.filter(d => matchesFilter(d.designation || '')))
-          .enter()
-          .append('circle')
-          .attr('data-id', d => d.id)
-          .attr('cx', d => {
-            const coords = projection([parseFloat(d.longitude), parseFloat(d.latitude)]);
-            return coords ? coords[0] : -9999;
-          })
-          .attr('cy', d => {
-            const coords = projection([parseFloat(d.longitude), parseFloat(d.latitude)]);
-            return coords ? coords[1] : -9999;
-          })
-          .attr('r', 10)
-          .attr('fill', d => getFillColor(d.designation || ''))
-          .attr('stroke', 'black')
-          .attr('stroke-width', 1)
-          .on('click', (event, d) => {
-            zoomToPark(d);
-            onParkSelect(d);
-          })
-          .on('mouseover', (event, d) => {
-            d3.select(event.target)
-              .transition()
-              .duration(100)
-              .attr('fill', 'orange');
-      
-            if (tooltip) {
-              tooltip
-                .style('opacity', 1)
-                .html(d.fullName)
-                .style('left', `${event.pageX + 10}px`)
-                .style('top', `${event.pageY + 10}px`);
-            }
-          })
-          .on('mousemove', (event) => {
-            if (tooltip) {
-              tooltip
-                .style('left', `${event.pageX + 10}px`)
-                .style('top', `${event.pageY + 10}px`);
-            }
-          })
-          .on('mouseout', (event, d) => {
-            const isSelected = selectedPark && d.id === selectedPark.id;
-            const fillColor = isSelected ? 'orange' : getFillColor(d.designation || '');
-      
-            d3.select(event.target)
-              .transition()
-              .duration(100)
-              .attr('fill', fillColor);
-      
-            if (tooltip) {
-              tooltip.style('opacity', 0);
-            }
-          })
-          .classed('park-selected', d => selectedPark && d.id === selectedPark.id);
-      }
-      
-      newSvg.call(zoomBehavior.current);
-      
 
+        map.selectAll('circle')
+        .data(parksData.filter(d => matchesFilter(d.designation || '')))
+        .enter()
+        .append('circle')
+        .attr('data-id', d => d.id)
+        .attr('cx', d => {
+          const coords = projection([parseFloat(d.longitude), parseFloat(d.latitude)]);
+          return coords ? coords[0] : -9999;
+        })
+        .attr('cy', d => {
+          const coords = projection([parseFloat(d.longitude), parseFloat(d.latitude)]);
+          return coords ? coords[1] : -9999;
+        })
+        .attr('r', 10)
+        .attr('fill', d => getFillColor(d.designation || ''))
+        .attr('stroke', 'black')
+        .attr('stroke-width', 1)
+        .on('click', (event, d) => {
+          zoomToPark(d);
+          onParkSelect(d);
+        })
+        .on('mouseover', (event, d) => {
+          d3.select(event.target)
+            .transition()
+            .duration(100)
+            .attr('fill', 'orange');
+
+          if (tooltip) {
+            tooltip
+              .style('opacity', 1)
+              .html(d.fullName)
+              .style('left', `${event.pageX + 10 }px`)
+              .style('top', `${event.pageY + 10 }px`);
+          }
+        })
+        .on('mousemove', (event) => {
+          if (tooltip) {
+            tooltip
+              .style('left', `${event.pageX + 10 }px`)
+              .style('top', `${event.pageY + 10 }px`);
+          }
+        })
+        .on('mouseout', (event, d) => {
+          const isSelected = selectedPark && d.id === selectedPark.id;
+          const fillColor = isSelected ? 'orange' : getFillColor(d.designation || '');
+
+          d3.select(event.target)
+            .transition()
+            .duration(100)
+            .attr('fill', fillColor);
+
+          if (tooltip) {
+            tooltip.style('opacity', 0);
+          }
+        })
+        .classed('park-selected', d => selectedPark && d.id === selectedPark.id);
+    }
+
+    newSvg.call(zoomBehavior.current);
+
+    // Reapply the current zoom transform after rendering
+    mapRef.current.attr('transform', currentTransform.current);
 
     return () => {
       d3.select(svgRef.current).selectAll('*').remove();
@@ -283,6 +290,8 @@ function Map({ selectedState, selectedPark, onParkSelect, filters }) {
     mapRef.current.selectAll('circle')
       .attr('r', d => (selectedPark && d.id === selectedPark.id ? 10 : 10) / zoomLevel);
   };
+
+  // ZOOM BEHAVIOR 
 
   const zoomToPark = (park) => {
     const width = 975;
