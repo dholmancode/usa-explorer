@@ -174,10 +174,7 @@ function Map({ selectedState, selectedPark, onParkSelect, filters }) {
           )) return true;
       
           if (filters.monument && (
-            designation.includes('Monument') ||
-            designation.includes('Recreation Area') ||
-            designation.includes('Scenic Trail') ||
-            designation.includes('Parkway')
+            designation.includes('Monument')
           )) return true;
       
           if (filters.water && (
@@ -190,11 +187,8 @@ function Map({ selectedState, selectedPark, onParkSelect, filters }) {
             designation.includes('Historic') || 
             designation.includes('Battlefield') ||
             designation.includes('National Park') ||
-            designation.includes('National Preserve') ||
             designation.includes('Monument') ||
-            designation.includes('Recreation Area') ||
-            designation.includes('Scenic Trail') ||
-            designation.includes('Parkway') ||
+            designation.includes('National Preserve') ||
             designation.includes('River') ||
             designation.includes('Lakeshore') ||
             designation.includes('Seashore')
@@ -205,9 +199,12 @@ function Map({ selectedState, selectedPark, onParkSelect, filters }) {
       
         const getFillColor = (designation) => {
           if (designation.includes('Historic') || designation.includes('Historical Park') || designation.includes('Battlefield')) return '#B55233';
+        
           if (designation.includes('National Park') || designation.includes('National Preserve')) return '#2D5F2E';
+        
           if (designation.includes('Lakeshore') || designation.includes('Seashore') || designation.includes('River')) return '#1B7688';
-          if (designation.includes('Monument') || designation.includes('Recreation Area') || designation.includes('Scenic Trail') || designation.includes('Parkway')) return '#6A3E77';
+         
+          if (designation.includes('Monument')) return '#6A3E77';
           return '#D9A441'; // Default color for other types
         };
 

@@ -166,7 +166,7 @@ function NavBar({ onStateSelect, parksData, onParkSelect, selectedPark, onFilter
     {[
       { key: 'historic', label: 'Historical & Cultural Sites', className: 'filter-historic' },
       { key: 'park', label: 'Parks & Reserves', className: 'filter-park' },
-      { key: 'monument', label: 'Monuments & Special Areas', className: 'filter-monument' },
+      { key: 'monument', label: 'Monuments', className: 'filter-monument' },
       { key: 'water', label: 'Rivers & Waterways', className: 'filter-water' },
       { key: 'other', label: 'Other', className: 'filter-other' }
     ].map(({ key, label, className }) => (

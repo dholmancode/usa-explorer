@@ -148,13 +148,17 @@ footer p {
 }
 
 .explorer {
-  width: 30vw;
+  width: 35vw;
 }
 
 @media (max-width: 1160px) {
   .App {
     flex-direction: column;
     justify-content: center;
+  }
+
+  .explorer {
+    width: 100%;
   }
 
   body {
