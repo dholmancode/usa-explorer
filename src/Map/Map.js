@@ -154,68 +154,118 @@ function Map({ selectedState, selectedPark, onParkSelect, filters }) {
     const tooltip = d3.select('body').append('div')
       .attr('class', 'tooltip');
 
-    if (parksData.length > 0) {
-      map.selectAll('circle')
-        .data(parksData.filter(d => {
-          if (filters.historic && d.fullName.includes('Historic')) return true;
-          if (filters.park && d.fullName.includes('Park')) return true;
-          if (filters.other && !d.fullName.includes('Historic') && !d.fullName.includes('Park')) return true;
-          return false;
-        }))
-        .enter()
-        .append('circle')
-        .attr('data-id', d => d.id)
-        .attr('cx', d => {
-          const coords = projection([parseFloat(d.longitude), parseFloat(d.latitude)]);
-          return coords ? coords[0] : -9999;
-        })
-        .attr('cy', d => {
-          const coords = projection([parseFloat(d.longitude), parseFloat(d.latitude)]);
-          return coords ? coords[1] : -9999;
-        })
-        .attr('r', 10)
-        .attr('fill', d => {
-          if (d.fullName.includes('Historic')) return 'blue';
-          if (d.fullName.includes('Park')) return 'green';
-          return 'red';
-        })
-        .attr('stroke', 'black')
-        .attr('stroke-width', 1)
-        .on('click', (event, d) => {
-          zoomToPark(d);
-          onParkSelect(d);
-        })
-        .on('mouseover', (event, d) => {
-          d3.select(event.target)
-            .transition()
-            .duration(100)
-            .attr('fill', 'orange');
-          tooltip
-            .style('opacity', 1)
-            .html(d.fullName)
-            .style('left', `${event.pageX + 10}px`)
-            .style('top', `${event.pageY + 10}px`);
-        })
-        .on('mousemove', (event) => {
-          tooltip
-            .style('left', `${event.pageX + 10}px`)
-            .style('top', `${event.pageY + 10}px`);
-        })
-        .on('mouseout', (event, d) => {
-          const isSelected = selectedPark && d.id === selectedPark.id;
-          const fillColor = isSelected ? 'orange' :
-            d.fullName.includes('Historic') ? 'blue' :
-            d.fullName.includes('Park') ? 'green' : 'red';
-          d3.select(event.target)
-            .transition()
-            .duration(100)
-            .attr('fill', fillColor);
-          tooltip.style('opacity', 0);
-        })
-        .classed('park-selected', d => selectedPark && d.id === selectedPark.id);
-    }
+      if (parksData.length > 0) {
+        const matchesFilter = (designation) => {
 
-    newSvg.call(zoomBehavior.current);
+          if (filters.historic && (
+            designation.includes('Historic') || 
+            designation.includes('Battlefield')
+          )) return true;
+      
+          if (filters.park && (
+            designation.includes('National Park') ||
+            designation.includes('National Preserve')
+          )) return true;
+      
+          if (filters.monument && (
+            designation.includes('Monument') ||
+            designation.includes('Recreation Area') ||
+            designation.includes('Scenic Trail') ||
+            designation.includes('Parkway')
+          )) return true;
+      
+          if (filters.water && (
+            designation.includes('River') ||
+            designation.includes('Lakeshore') ||
+            designation.includes('Seashore')
+          )) return true;
+
+          if (filters.other && !(
+            designation.includes('Historic') || 
+            designation.includes('Battlefield') ||
+            designation.includes('National Park') ||
+            designation.includes('National Preserve') ||
+            designation.includes('Monument') ||
+            designation.includes('Recreation Area') ||
+            designation.includes('Scenic Trail') ||
+            designation.includes('Parkway') ||
+            designation.includes('River') ||
+            designation.includes('Lakeshore') ||
+            designation.includes('Seashore')
+        )) return true;
+      
+          return false;
+        };      
+      
+        const getFillColor = (designation) => {
+          if (designation.includes('Historic') || designation.includes('Historical Park') || designation.includes('Battlefield')) return 'brown';
+          if (designation.includes('National Park') || designation.includes('National Preserve')) return 'green';
+          if (designation.includes('Lakeshore') || designation.includes('Seashore') || designation.includes('River')) return 'blue';
+          if (designation.includes('Monument') || designation.includes('Recreation Area') || designation.includes('Scenic Trail') || designation.includes('Parkway')) return 'purple';
+          return 'red'; // Default color for other types
+        };
+      
+        map.selectAll('circle')
+          .data(parksData.filter(d => matchesFilter(d.designation || '')))
+          .enter()
+          .append('circle')
+          .attr('data-id', d => d.id)
+          .attr('cx', d => {
+            const coords = projection([parseFloat(d.longitude), parseFloat(d.latitude)]);
+            return coords ? coords[0] : -9999;
+          })
+          .attr('cy', d => {
+            const coords = projection([parseFloat(d.longitude), parseFloat(d.latitude)]);
+            return coords ? coords[1] : -9999;
+          })
+          .attr('r', 10)
+          .attr('fill', d => getFillColor(d.designation || ''))
+          .attr('stroke', 'black')
+          .attr('stroke-width', 1)
+          .on('click', (event, d) => {
+            zoomToPark(d);
+            onParkSelect(d);
+          })
+          .on('mouseover', (event, d) => {
+            d3.select(event.target)
+              .transition()
+              .duration(100)
+              .attr('fill', 'orange');
+      
+            if (tooltip) {
+              tooltip
+                .style('opacity', 1)
+                .html(d.fullName)
+                .style('left', `${event.pageX + 10}px`)
+                .style('top', `${event.pageY + 10}px`);
+            }
+          })
+          .on('mousemove', (event) => {
+            if (tooltip) {
+              tooltip
+                .style('left', `${event.pageX + 10}px`)
+                .style('top', `${event.pageY + 10}px`);
+            }
+          })
+          .on('mouseout', (event, d) => {
+            const isSelected = selectedPark && d.id === selectedPark.id;
+            const fillColor = isSelected ? 'orange' : getFillColor(d.designation || '');
+      
+            d3.select(event.target)
+              .transition()
+              .duration(100)
+              .attr('fill', fillColor);
+      
+            if (tooltip) {
+              tooltip.style('opacity', 0);
+            }
+          })
+          .classed('park-selected', d => selectedPark && d.id === selectedPark.id);
+      }
+      
+      newSvg.call(zoomBehavior.current);
+      
+
 
     return () => {
       d3.select(svgRef.current).selectAll('*').remove();

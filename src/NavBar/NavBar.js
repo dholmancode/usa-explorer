@@ -34,12 +34,19 @@ function NavBar({ onStateSelect, parksData, onParkSelect, selectedPark, onFilter
   const [isSearching, setIsSearching] = useState(false);
   const searchContainerRef = useRef(null);
   const [parkStates, setParkStates] = useState({});
-  const [selectedState, setSelectedState] = useState('');
+  const [selectedState, setSelectedState] = useState();
   const [filters, setFilters] = useState({
     historic: true,
     park: true,
+    monument: true,
+    water: true,
     other: true,
   });
+
+  useEffect(() => {
+    onFilterChange(filters); // Ensure filters are applied when component mounts
+  }, []);
+  
 
   useEffect(() => {
     const fetchParkStates = async () => {
@@ -155,32 +162,29 @@ function NavBar({ onStateSelect, parksData, onParkSelect, selectedPark, onFilter
   return (
     <nav className="nav-bar">
       <div className='top-bar-container'>
-        <div className="filter-container">
-          <label>
-            <input
-              type="checkbox"
-              checked={filters.historic}
-              onChange={() => handleFilterChange('historic')}
-            />
-            Historic
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={filters.park}
-              onChange={() => handleFilterChange('park')}
-            />
-            Park
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={filters.other}
-              onChange={() => handleFilterChange('other')}
-            />
-            Other
-          </label>
-        </div>
+<div className="filter-container">
+  <fieldset>
+    <legend>Filter by Type:</legend>
+    {[
+      { key: 'historic', label: 'Historical & Cultural Sites' },
+      { key: 'park', label: 'Parks & Reserves' },
+      { key: 'monument', label: 'Monuments & Special Areas' },
+      { key: 'water', label: 'Rivers & Waterways' },
+      { key: 'other', label: 'Other' }
+    ].map(({ key, label }) => (
+      <label key={key} className="filter-label">
+        <input
+          type="checkbox"
+          checked={filters[key]}
+          onChange={() => handleFilterChange(key)}
+        />
+        {label}
+        <br />
+      </label>
+    ))}
+  </fieldset>
+</div>
+
         <div className="search-container" ref={searchContainerRef}>
           <input
             type="text"

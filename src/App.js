@@ -11,11 +11,13 @@ function App() {
   const [selectedState, setSelectedState] = useState('');
   const [parksData, setParksData] = useState([]);
   const [accordionOpen, setAccordionOpen] = useState(false);
-  const [filters, setFilters] = useState({
-    historic: true,
-    park: true,
-    other: true,
-  });
+const [filters, setFilters] = useState({
+  parks: true,
+  historical: true,
+  monuments: true,
+  rivers: true
+});
+
 
   const handleFilterChange = (updatedFilters) => {
     setFilters(updatedFilters);
